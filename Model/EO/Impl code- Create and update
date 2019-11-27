@@ -1,0 +1,17 @@
+protected void create(AttributeList attributeList) {
+        SequenceImpl seq = new SequenceImpl("UNIT_TRANSFER_ID_S", this.getDBTransaction());
+        this.setBookingCustDtlId(seq.getSequenceNumber());
+        this.setCreatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+        this.setLastUpdatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+        this.setLastUpdateLogin(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+        super.create(attributeList);
+    }
+   
+   
+        protected void doDML(int operation, TransactionEvent e) {
+        if(operation==EntityImpl.DML_UPDATE){
+            setLastUpdatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+            setLastUpdateLogin(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+         }
+        super.doDML(operation, e);
+    }
