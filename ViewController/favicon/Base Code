@@ -1,0 +1,2 @@
+Documents-->MetaContainer
+<link href="#{facesContext.externalContext.requestContextPath}/favicon.ico" rel="shortcut icon">
