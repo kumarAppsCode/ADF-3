@@ -22,3 +22,17 @@
         }
         super.doDML(operation, e);
     }
+
+/**
+     * Add entity remove logic in this method.
+     */
+    public void remove() {
+        //Get all Employees of currenlty selected Department
+        RowIterator employees = getEmployeesEO1();
+        while (employees.hasNext()) {
+            //Delete all Employees
+            employees.next().remove();
+        }
+        //Delete Department itself after deleting all Employees associated with it
+        super.remove();
+    }
