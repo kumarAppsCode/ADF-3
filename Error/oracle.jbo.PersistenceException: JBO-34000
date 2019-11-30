@@ -1,0 +1,11 @@
+oracle.jbo.PersistenceException: JBO-34000: Definition class name missing in XML file of type task Flow
+
+I was copying the content from DataBindings.cpx into new DataBindings.cpx file for a new application & missed to include <definitionFactories/> .
+
+Solution - Open DataBinding.cpx file. Paste the below lines -
+<definitionFactories>
+        <factory nameSpace="http://xmlns.oracle.com/adf/controller/binding"
+                 className="oracle.adf.controller.internal.binding.TaskFlowBindingDefFactoryImpl"/>
+        <dtfactory className="oracle.adf.controller.internal.dtrt.binding.BindingDTObjectFactory"/>
+        <factory nameSpace="http://xmlns.oracle.com/adfm/dvt"
+                 className="oracle.adfinternal.view.faces.dvt.model.binding.FacesBindingFactory"/></definitionFactories>
