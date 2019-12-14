@@ -1,0 +1,5 @@
+         TO_NUMBER (
+            SUBSTR (ih.invoice_number,
+                    (INSTR (ih.invoice_number, '-', 2) + 2),
+                    LENGTH (ih.invoice_number)))
+            new_seq_number,
