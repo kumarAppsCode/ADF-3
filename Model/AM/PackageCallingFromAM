@@ -1,0 +1,37 @@
+public ArrayList getDataFromProcedure(int sch_id, int job_num, String uname, Date Sch_date) {
+        ArrayList list = new ArrayList();
+        try {
+            CallableStatement cst =
+                this.getDBTransaction().createCallableStatement("{call mosm_sechdule_pkg.ins_schedule_dtls(?,?,?,?,?,?)}",
+                                                                1);
+            System.err.println("Datas==>" + sch_id + job_num + uname + Sch_date);
+            cst.setInt(1, sch_id);
+            cst.setInt(2, job_num);
+            cst.setString(3, uname);
+            cst.setDate(4, (java.sql.Date) Sch_date);
+            cst.registerOutParameter(5, Types.VARCHAR);
+            cst.registerOutParameter(6, Types.VARCHAR);
+            cst.execute();
+            list.add(cst.getString(5));
+            list.add(cst.getString(6));
+        } catch (SQLException sqle) {
+            // TODO: Add catch code
+            sqle.printStackTrace();
+        }
+        System.out.println("updated successfully");
+        System.err.println("List ==>" + list);
+        return list;
+    }
+
+
+        OperationBinding bindings = ADFUtils.findOperation("getDataFromProcedure");
+        bindings.getParamsMap().put("sch_id", currow.getAttribute("ScheduleId"));
+        bindings.getParamsMap().put("job_num", schvo.getCurrentRow().getAttribute("JobCardNum"));
+        bindings.getParamsMap().put("uname", ADFContext.getCurrent().getSessionScope().get("userId"));
+        bindings.getParamsMap().put("Sch_date", currow.getAttribute("SchDate"));
+        ArrayList obj = (ArrayList) bindings.execute();
+        if (obj != null) {
+            StaFlag = obj.get(0).toString(); // get the return value
+            errormsg = obj.get(1).toString();
+        }
+        System.err.println("output==>" + StaFlag + "==>" + errormsg);
