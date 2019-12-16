@@ -1,0 +1,72 @@
+public void onClickSync(ActionEvent actionEvent) throws ClientProtocolException,
+                                                            IOException,
+                                                            JSONException {
+        // Add event code here...
+        String syncResp = invokeRWServices("BUY_CONTRACT_HEADERS");
+
+        if ("success".equals(syncResp)) {
+            String syncLineResp = invokeRWServices("BUY_CONTRACT_LINES");
+            if ("success".equals(syncLineResp)) {
+                JSFUtils.addFacesInformationMessage("Contract Sync Completed ..");
+            }
+        }
+        else{
+                JSFUtils.addFacesInformationMessage("No Contracts for sync ..");
+            }
+        //        if(1){
+        //                String syncResp=invokeRWServices("BUY_CONTRACT_LINES");
+        //            }
+    }
+--------------
+--------------
+--------------
+
+
+    public String invokeRWServices(String param) throws ClientProtocolException,
+                                                        IOException,
+                                                        JSONException {
+        String defaultUserPass = "";
+        String result=null;
+      URL obj =new URL("http://localhost:8080/SyncReport/webresources/sync/BIReport/" +param); //Local
+        
+
+        HttpURLConnection postConnection =
+            (HttpURLConnection)obj.openConnection();
+        postConnection.setRequestMethod("GET");
+        //                    String basicAuth = "Basic " + new String(Base64.getEncoder().encode(defaultUserPass.getBytes()));
+        //                    postConnection.setRequestProperty("Authorization", basicAuth);
+        postConnection.setRequestProperty("Content-Type", "application/json");
+        postConnection.setDoOutput(true);
+        int responseCode = postConnection.getResponseCode();
+        StringBuffer response = new StringBuffer();
+        String resMsg = null;
+
+        System.out.println("GET Response Code :  " + responseCode);
+        System.out.println("GET Response Message : " +
+                           postConnection.getResponseMessage());
+        resMsg = postConnection.getResponseMessage();
+
+       
+        if (responseCode == HttpURLConnection.HTTP_OK) { //success
+            BufferedReader in =
+                new BufferedReader(new InputStreamReader(postConnection.getInputStream()));
+            StringBuilder out = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                out.append(inputLine);
+            }
+            in.close();
+            // print result
+           
+            JSONObject jsonObject = new JSONObject(response.toString());
+             result = jsonObject.getString("Response");
+            System.out.println(response.toString());
+            System.out.println(result);
+        } else {
+            System.out.println("GET NOT WORKED");
+        }
+        return result;
+    }
+===========================================================================================
+===============================================================================================
