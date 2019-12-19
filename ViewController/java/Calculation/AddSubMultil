@@ -1,0 +1,17 @@
+BigDecimal collectedAmt =
+                new BigDecimal(currRow.getAttribute("CollectedAmountTrans") == null ? "0" :
+                                   currRow.getAttribute("CollectedAmountTrans").toString());
+            BigDecimal forfietAmt =
+                new BigDecimal(currRow.getAttribute("ForfietAmount") == null ? "0" :
+                                   currRow.getAttribute("ForfietAmount").toString());
+            BigDecimal refundAmt =
+                new BigDecimal(currRow.getAttribute("RefundAmount") == null ? "0" :
+                                   currRow.getAttribute("RefundAmount").toString());
+           
+ 
+
+            BigDecimal result = collectedAmt.subtract(forfietAmt.add(refundAmt)); 
+
+            if(result.equals(new BigDecimal("0.00"))){
+               
+            }
