@@ -1,0 +1,6 @@
+In Default spring boot: -class
+
+@SpringBootApplication
+@EnableAutoConfiguration
+@ComponentScan
+@Import(GetServices.class)
