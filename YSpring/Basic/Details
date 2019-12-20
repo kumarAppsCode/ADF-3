@@ -1,0 +1,37 @@
+1. install NPM: 
+https://www.npmjs.com/get-npm
+======================================================================
+2. Install Maven
+https://howtodoinjava.com/maven/how-to-install-maven-on-windows/
+https://www.mkyong.com/maven/how-to-install-maven-in-windows/
+======================================================================
+3.install visualstudio
+https://code.visualstudio.com/Download
+======================================================================
+4.Spring boot with visualstudio 
+https://code.visualstudio.com/docs/java/java-spring-boot
+https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-spring-boot
+https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-initializr
+https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-boot-dashboard
+=================================================================================================
+
+
+Node Version : node -v
+--------------------------------------
+Npm Version : npm -v
+--------------------------------------
+npm update latest : npm install npm@latest -g
+--------------------------------------
+node update latest :
+npm install -g npm-windows-upgrade
+npm-windows-upgrade
+--------------------------------------
+
+Basic code: 
+mvn clean
+mvn install
+mvn clean install
+mvn spring-boot:run
+----------------------------------------------------
+(control + c) - Stop the server
+----------------------------------------------------
