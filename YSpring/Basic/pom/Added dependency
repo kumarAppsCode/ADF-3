@@ -1,0 +1,21 @@
+<metadata>
+  <groupId>com.oraclejar</groupId>
+  <artifactId>ojdbc7</artifactId>
+  <versioning>
+    <release>12.1.0.1</release>
+    <versions>
+      <version>12.1.0.1</version>
+    </versions>
+    <lastUpdated>20191220124106</lastUpdated>
+  </versioning>
+</metadata>
+-------------------------------------
+<dependencies>
+    <dependency>
+		  <groupId>com.oraclejar</groupId>
+		  <artifactId>ojdbc7</artifactId>
+		  <version>12.1.0.1</version>
+	  </dependency>
+	</dependencies>
+-------------------------------------
+<packaging>war</packaging>
