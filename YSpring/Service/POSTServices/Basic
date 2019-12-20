@@ -1,0 +1,11 @@
+Sample: 
+@RestController
+@RequestMapping(value = "/api", method = RequestMethod.POST)
+public BasicDetailsResponse postservices(@RequestBody BasicDetail inputPyaload){
+    response.setId(inputPyaload.getId()*5);
+    response.setMessage("Hi Dinesh"+inputPyaload.getName());
+    response.setMessage("Travelling Pondy to chennai");
+    response.setExtraMessage("extraMessage");
+
+return response;
+}
