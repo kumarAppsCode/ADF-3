@@ -1,0 +1,4 @@
+mvn install:install-file -Dfile=<your-jar-file-location> -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=<your-jar version> -Dpackaging=jar
+
+
+mvn install:install-file -Dfile=C:\Users\DineshkumarP\Documents\NetBeansProjects\jar\ojdbc7.jar -DgroupId=com.oraclejar -DartifactId=ojdbc7 -Dversion=12.1.0.1 -Dpackaging=jar
