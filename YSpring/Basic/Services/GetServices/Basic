@@ -1,0 +1,16 @@
+@RestController :
+Indicates that this class will have Rest End points
+========================================================================================
+@RequestMapping : @RequestMapping("/SampleGet")
+maps the /sample endpoint to Sample Function
+
+Sample code : @RequestMapping("/SampleGet")
+========================================================================================
+@RequestParam: @RequestParam(value = "name") String name
+Indicates that the endpoint /sample will have one Query parameter called name. 
+The default value of name is “Robot”
+
+Sample code : @RequestParam(value = "name") String name
+Sample code : @RequestParam(value = "name", defaultValue = "Robot") String name
+========================================================================================
+
