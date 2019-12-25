@@ -1,0 +1,50 @@
+    public void onClickReports(FacesContext facesContext,
+                               OutputStream outputStream) throws IOException {
+        try {
+            //            ViewObject vo =
+            //                ADFUtils.findIterator("Contract_ROVO1Iterator").getViewObject();
+            //            vo.setNamedWhereClauseParam("p_type", "B");
+            //            vo.executeQuery();
+
+            Number cert =
+                (Number)certificationHrdVO.getCurrentRow().getAttribute("CertHeaderId");
+            System.err.println("cert===>" + cert);
+            Object result = null;
+            if (certificationHrdVO.getCurrentRow().getAttribute("PaymentType").toString().equalsIgnoreCase("Interim") ||
+                certificationHrdVO.getCurrentRow().getAttribute("PaymentType").toString().equalsIgnoreCase("Final")) {
+                if (ADFContext.getCurrent().getSessionScope().get("page").equals("certificationBuy")) {
+                    result =
+                            RTFUtils.runReport("//reports//Payment_Certificate_Task_Interim_Buy.rtf",
+                                               cert, "Payment_certificate");
+                } else if (ADFContext.getCurrent().getSessionScope().get("page").equals("certificationSell")) {
+                    result =
+                            RTFUtils.runReport("//reports//Payment_Certificate_Task_Interim_Sell.rtf",
+                                               cert, "Payment_certificate");
+                }
+            } else if (certificationHrdVO.getCurrentRow().getAttribute("PaymentType").toString().equalsIgnoreCase("Material Advance") ||
+                       certificationHrdVO.getCurrentRow().getAttribute("PaymentType").toString().equalsIgnoreCase("Advance")) {
+                if (ADFContext.getCurrent().getSessionScope().get("page").equals("certificationBuy")) {
+                    result =
+                            RTFUtils.runReport("//reports//Payment_Certificate_Task_Advance_Buy.rtf",
+                                               cert, "Payment_certificate");
+                } else if (ADFContext.getCurrent().getSessionScope().get("page").equals("certificationSell") ||
+                           ADFContext.getCurrent().getSessionScope().get("page").equals("application")) {
+                    result =
+                            RTFUtils.runReport("//reports//Payment_Certificate_Task_Advance_Sell.rtf",
+                                               cert, "Payment_certificate");
+                }
+            }
+            System.err.println("byte[])result==>"+(byte[])result);
+            if(result != null){
+                outputStream.write((byte[])result); 
+            }else{
+                result =
+                        RTFUtils.runErrorReport("//reports//Error_File.rtf");
+                
+                outputStream.write((byte[])result); 
+            }
+            
+        } catch (IOException e) {
+            System.out.println("Exception " + e);
+        }
+    }
