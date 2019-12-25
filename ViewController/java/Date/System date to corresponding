@@ -1,0 +1,53 @@
+       cal.add(Calendar.YEAR, 1);
+       System.out.println("Add one year to current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.HOUR, 1);
+       System.out.println("Add one hour to current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.MINUTE, 1);
+       System.out.println("Add one minute to current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.SECOND, 1);
+       System.out.println("Add one second to current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.DATE, -1);
+       System.out.println("Subtract one day from current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.MONTH, -1);
+       System.out.println("Subtract one month from current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.YEAR, -1);
+       System.out.println("Subtract one year from current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.HOUR, -1);
+       System.out.println("Subtract one hour from current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.MINUTE, -1);
+       System.out.println("Subtract one minute from current date : " + dateFormat.format(cal.getTime()));
+
+       cal = Calendar.getInstance();
+       cal.add(Calendar.SECOND, -1);
+       System.out.println("Subtract one second from current date : " + dateFormat.format(cal.getTime()));
+
+
+Current Date Time : 2008/12/28 10:24:53
+Add one day to current date : 2008/12/29 10:24:53
+Add one month to current date : 2009/01/28 10:24:53
+Add one year to current date : 2009/12/28 10:24:53
+Add one hour to current date : 2008/12/28 11:24:53
+Add one minute to current date : 2008/12/28 10:25:53
+Add one second to current date : 2008/12/28 10:24:54
+Subtract one day from current date : 2008/12/27 10:24:53
+Subtract one month from current date : 2008/11/28 10:24:53
+Subtract one year from current date : 2007/12/28 10:24:53
+Subtract one hour from current date : 2008/12/28 09:24:53
+Subtract one minute from current date : 2008/12/28 10:23:53
+Subtract one second from current date : 2008/12/28 10:24:52
