@@ -7,8 +7,14 @@
 <artifactId>ojdbc7</artifactId>
 <version>12.1.0.1</version>
 </dependency>	
-	==============================================================	
+==============================================================	
 spring-boot-starter-web
 spring-boot-devtools
 spring-boot-starter-data-jpa
+==============================================================
+spring.datasource.url=jdbc:oracle:thin:@localhost:1533/servicename
+spring.datasource.username=ppp
+spring.datasource.password=ppp
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.jpa.database-platform=org.hibernate.dialect.Oracle10gDialect
 ==============================================================
