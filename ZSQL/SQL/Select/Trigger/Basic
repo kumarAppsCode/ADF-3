@@ -1,0 +1,8 @@
+CREATE OR REPLACE TRIGGER emptbl_on_insert
+  BEFORE INSERT ON tbl_employee
+  FOR EACH ROW
+BEGIN
+  SELECT emptbl_sequence.nextval
+  INTO :new.ID
+  FROM dual;
+END;
