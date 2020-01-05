@@ -1,0 +1,16 @@
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
+
+ 
+
+FacesContext fc = FacesContext.getCurrentInstance();
+
+ String refreshpage = fc.getViewRoot().getViewId(); 
+
+ ViewHandler ViewH = fc.getApplication().getViewHandler();  
+
+ UIViewRoot UIV = ViewH.createView(fc, refreshpage); 
+
+ UIV.setViewId(refreshpage);
+
+ fc.setViewRoot(UIV);
