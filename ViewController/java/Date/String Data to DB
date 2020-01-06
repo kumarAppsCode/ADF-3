@@ -1,0 +1,12 @@
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+        //-- Date
+        SimpleDateFormat parser = new SimpleDateFormat("dd-MM-yyyy");
+        java.util.Date date = parser.parse(P_DATE);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        String dateParam = formatter.format(date);
+        SimpleDateFormat pkgFormatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String dateFormat = pkgFormatter.format(date);
+        System.out.println("Date--"+dateParam);
