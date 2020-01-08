@@ -1,0 +1,37 @@
+CREATE OR REPLACE PROCEDURE json_array_traversal (p_json CLOB) IS
+
+    CURSOR c_json IS
+    SELECT
+        j.ms_hdr_id,
+        j.milestone_name,
+        j.milestone_number
+    FROM
+            JSON_TABLE ( p_json, '$[*]'
+                COLUMNS
+                    ms_hdr_id VARCHAR2 ( 240 ) PATH '$.MS_HDR_ID',
+                    milestone_name VARCHAR2 ( 240 ) PATH '$.MILESTONE_NAME',
+                    milestone_number VARCHAR2 ( 240 ) PATH '$.MILESTONE_NUMBER'
+            )
+        j;
+
+BEGIN
+    FOR rec IN c_json LOOP
+        dbms_output.put_line('Header Id : ' || rec.ms_hdr_id);
+        dbms_output.put_line('MILESTONE_NAME : ' || rec.milestone_name);
+        dbms_output.put_line('MILESTONE_NUMBER : ' || rec.milestone_number);
+    END LOOP;
+    
+/* apex_json.parse(p_json);
+    FOR i IN 1..2 LOOP
+        dbms_output.put_line('Header Id : '
+                             || apex_json.get_varchar2(p_path => '[%d].MS_HDR_ID', p0 => i));
+
+        dbms_output.put_line('MILESTONE_NAME : '
+                             || apex_json.get_varchar2(p_path => '[%d].MILESTONE_NAME', p0 => i));
+
+        dbms_output.put_line('MILESTONE_NUMBER : '
+                             || apex_json.get_varchar2(p_path => '[%d].MILESTONE_NUMBER', p0 => i));
+
+        dbms_output.put_line('******************************');
+    END LOOP;*/
+END;
