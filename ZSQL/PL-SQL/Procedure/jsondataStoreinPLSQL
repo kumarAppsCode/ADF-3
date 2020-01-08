@@ -1,3 +1,28 @@
+SET SERVEROUTPUT ON
+/
+
+DECLARE
+    p_json CLOB := 
+    '[ 
+{ 
+"MS_HDR_ID":"1",
+"MILESTONE_NAME":"PAD - Payment Plan 1",
+"MILESTONE_NAME_TL":"",
+"MILESTONE_NUMBER":"PAD - 1"
+},
+{ 
+"MS_HDR_ID":"2",
+"MILESTONE_NAME":"PAD - Payment Plan 2",
+"MILESTONE_NAME_TL":"",
+"MILESTONE_NUMBER":"PAD - 2"
+}
+]'
+    ;
+BEGIN
+JSON_ARRAY_TRAVERSAL(P_JSON);
+END;
+
+***********************
 CREATE OR REPLACE PROCEDURE json_array_traversal (p_json CLOB) IS
 
     CURSOR c_json IS
