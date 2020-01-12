@@ -1,0 +1,39 @@
+List<SelectItem> customList;
+
+        public void setCustomList(List<SelectItem> customList) {
+            this.customList = customList;
+        }
+
+        public List<SelectItem> () {
+            if (customList == null) {
+                   try {
+                       Client c = Client.create();
+                       
+                       c.addFilter(new HTTPBasicAuthFilter("4iapps", "welcome@4i"));
+                       WebResource resource =
+                           c.resource("https://efmj-test.fa.em3.oraclecloud.com:443/fscmRestApi/resources/11.13.18.05/expenditureTypes?limit=132");
+                       String response = resource.accept("application/json").get(String.class);
+//                       System.out.println(response);getCustomList
+                       JSONObject jsonObj = new JSONObject(response);
+                       String name = jsonObj.getString("items");
+//                       System.out.println(name + "--------------");
+                       JSONArray arrJson = jsonObj.getJSONArray("items");
+                       JSONArray resultArray = (JSONArray) arrJson;
+                       customList = new ArrayList<SelectItem>();
+//                       System.out.println(resultArray.length() +"-------------------------------------length");
+                       for (int i = 0; i < resultArray.length(); i++) {
+                           JSONObject result = resultArray.getJSONObject(i);
+                           String a = result.getString("ExpenditureTypeId");
+                           String b = result.getString("ExpenditureTypeName");
+                             
+                           customList.add(new SelectItem(a, b));
+//                           System.out.println(result.getString("ExpenditureTypeName"));
+                       }
+                   }
+
+                   catch (Exception e) {
+                       e.printStackTrace();
+                   }    
+               }
+                   return customList;
+        }
