@@ -1,0 +1,18 @@
+
+        public double getTotalPerc() {
+        ViewObject MileDtl = ADFUtils.findIterator("XxpmOfferMilestoneDetail_VO1Iterator").getViewObject();
+        RowSetIterator dtlsRS = MileDtl.createRowSetIterator(null);
+        double sum = 0.0;
+        while (dtlsRS.hasNext()) {
+            Row r = dtlsRS.next();
+            String insPct =
+                r.getAttribute("InstallmentPct") == null ? "0.0" : r.getAttribute("InstallmentPct").toString();
+            double per = Double.parseDouble(insPct);
+            if ("LOU".equals(r.getAttribute("ChargeType")) || "SOU".equals(r.getAttribute("ChargeType"))) {
+                sum = sum + per;
+            }
+        }
+       
+        System.err.println("sum from getTotalPerc()==" + sum);
+        return sum;
+    }
