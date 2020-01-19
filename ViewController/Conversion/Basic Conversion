@@ -1,0 +1,5 @@
+
+BigDecimal bd_amount = new BigDecimal(Math.round(finalPerc*100.00)/100.00);
+
+BigDecimal to Double
+bigDecimal.doubleValue()
