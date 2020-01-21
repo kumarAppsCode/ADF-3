@@ -1,0 +1,21 @@
+set SERVEROUTPUT ON;
+declare
+strTime1 varchar2(50) := '02/08/2013 09:00:00 AM';
+strTime2 varchar2(50) := '02/08/2013 06:00:00 PM';
+v_date1 date := to_date(strTime1,'DD/MM/YYYY HH:MI:SS PM');
+v_date2 date := to_date(strTime2,'DD/MM/YYYY HH:MI:SS PM');
+difrence_In_Hours number;
+difrence_In_minutes number;
+difrence_In_seconds number;
+begin
+    difrence_In_Hours   := (v_date2 - v_date1) * 24;
+    difrence_In_minutes := difrence_In_Hours * 60;
+    difrence_In_seconds := difrence_In_minutes * 60;
+
+    dbms_output.put_line(strTime1);        
+    dbms_output.put_line(strTime2);
+    dbms_output.put_line('*******');
+    dbms_output.put_line('difrence_In_Hours  : ' || difrence_In_Hours);
+    dbms_output.put_line('difrence_In_minutes: ' || difrence_In_minutes);
+    dbms_output.put_line('difrence_In_seconds: ' || difrence_In_seconds);        
+end ;
