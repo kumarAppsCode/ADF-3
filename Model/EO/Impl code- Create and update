@@ -1,3 +1,26 @@
+        protected void create(AttributeList attributeList) {
+        SequenceImpl seq = new SequenceImpl("FUNC_ID_S", this.getDBTransaction());
+        this.setLookupTypeId(seq.getSequenceNumber());
+        this.setCreatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+        this.setLastUpdatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+        this.setLastUpdateLogin(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+        this.setCreationDate(new Timestamp(System.currentTimeMillis()));
+        super.create(attributeList);
+    }
+    
+    
+        protected void doDML(int operation, TransactionEvent e) {
+        if(operation==EntityImpl.DML_UPDATE){
+         this.setLastUpdatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+         this.setLastUpdateLogin(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+         this.setLastUpdateDate(new Timestamp(System.currentTimeMillis()));
+        }
+        super.doDML(operation, e);
+    }
+    
+    
+    
+    
     protected void create(AttributeList attributeList) {
         SequenceImpl seq = new SequenceImpl("FUNC_ID_S", this.getDBTransaction());
         this.setFuncId(seq.getSequenceNumber());
