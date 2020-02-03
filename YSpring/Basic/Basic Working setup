@@ -1,0 +1,36 @@
+# Oracle
+spring.datasource.url=jdbc:oracle:thin:@144.21.67.79:1533/omnipdb1.606532292.oraclecloud.internal
+spring.datasource.username=***
+spring.datasource.password=***
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
+spring.jpa.hibernate.ddl-auto=create-drop in application.properties for post operations
+server.port=8089
+
+****************************************************************************
+	<properties>
+		<java.version>1.8</java.version>
+		<start-class>com.curd_operate.demo__process.DemoApplication</start-class>
+	</properties>
+
+****************************************************************************
+spring-boot-starter-data-jpa
+spring-boot-starter-web
+spring-boot-devtools
+com.h2database- runtime- remove
+spring-boot-starter-thymeleaf
+ojdbc8
+spring-boot-starter-test--test remove
+****************************************************************************
+plugin: spring-boot-maven-plugin
+****************************************************************************
+parent:-
+<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.4.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+</parent>
+****************************************************************************
+
+	
