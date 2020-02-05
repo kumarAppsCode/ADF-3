@@ -1,0 +1,19 @@
+create or replace PROCEDURE IGG_XX_SYNC_ACTUAL_TIME(P_EMP_ID NUMBER,
+                                                    P_PUNCH_DATE TIMESTAMP) 
+AS 
+
+cursor emp_info(P_EMP_ID number)
+is
+SELECT 
+EMP_ID, EMP_NUMBER
+FROM IGG_XX_EMPLOYEE_DETAILS_SAAS
+--WHERE EMP_ID=nvl(300000002179710,EMP_ID);
+WHERE EMP_ID=nvl(P_EMP_ID , EMP_ID);
+l_actual_in_time timestamp;
+l_actual_out_time timestamp;
+BEGIN
+FOR c1 in emp_info(300000002179710)
+Loop
+null;
+end Loop;
+END;
