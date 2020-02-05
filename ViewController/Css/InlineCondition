@@ -1,1 +1,4 @@
 font-weight:bold;color:#{backingBeanScope.AddEditMilestones.totalPerc==100.0 ? 'green':'red'};
+
+******
+inlineStyle="color:#{(row.ApprovalStatusApplDisp eq 'Approved')?'green':(row.ApprovalStatusApplDisp eq 'Rejected')?'red':(row.ApprovalStatusApplDisp eq 'Submit For Approval')?'Olive':'black'};"/>
