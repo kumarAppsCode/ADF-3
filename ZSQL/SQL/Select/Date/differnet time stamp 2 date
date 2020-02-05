@@ -1,0 +1,32 @@
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "TBGHCMUAT"."IGG_XX_EMPLOYEE_PUNCHING_SHEET_V" ("ATT_DATE", "PUNCH_ID", "EMP_ID", "EMP_NUM", "PUNCH_NUM", "CREATED_DATE", "PUNCH_IN_DATE", "PUNCH_OUT_DATE", "DAY", "HOURS", "MINUTES", "SECONDS", "ODC_TIME", "PUNCH_STATUS") AS 
+  Select 
+trunc(CREATED_DATE) as ATT_DATE,
+PUNCH_ID,
+EMP_ID,
+EMP_NUM,
+PUNCH_NUM,
+CREATED_DATE,
+PUNCH_IN_DATE,
+PUNCH_OUT_DATE,
+extract(day from diff) as day,
+extract( hour from diff ) as hours,
+extract( minute from diff ) as minutes,
+extract( second from diff ) as seconds,
+extract( hour from diff )||':'||extract( minute from diff )||':'||extract( second from diff )as ODC_TIME,
+PUNCH_STATUS
+from(
+SELECT  
+to_timestamp(PUNCH_OUT_DATE,'DD-MON-RR HH.MI.SSXFF AM')-to_timestamp(PUNCH_IN_DATE,'DD-MON-RR HH.MI.SSXFF AM')diff,
+PUNCH_ID,
+EMP_ID,
+EMP_NUM,
+PUNCH_NUM,
+CREATED_DATE,
+PUNCH_IN_DATE,
+PUNCH_OUT_DATE,
+PUNCH_STATUS
+FROM igg_xx_employee_punching_sheet)
+order by PUNCH_IN_DATE
+--where PUNCH_STATUS='U');
+;
