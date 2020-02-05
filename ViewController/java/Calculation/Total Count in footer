@@ -1,0 +1,18 @@
+Total Count in footer
+public double getTotalHoursPerDay() {
+            ViewObject atDtl = ADFUtils.findIterator("AttendanceDetails1Iterator").getViewObject();
+            RowSetIterator atHRRS = atDtl.createRowSetIterator(null);
+            double sum = 0.0;
+            while (atHRRS.hasNext()) {
+                Row r = atHRRS.next();
+                String hours =
+                    r.getAttribute("Hours") == null ? "0.0" : r.getAttribute("Hours").toString();
+                double tothr = Double.parseDouble(hours);
+                if ("U".equals(r.getAttribute("PunchStatus"))){
+                    sum = sum + tothr;
+                }
+            }
+            BigDecimal totalHrSum=new BigDecimal(Math.round(sum*100)/100);
+            System.err.println("sum from getTotalHours()==" + sum);
+            return totalHrSum.doubleValue();
+        }
