@@ -1,0 +1,19 @@
+SELECT 
+emp.SCHEDULE_TIME_IN,
+MIN(ps.PUNCH_IN_DATE) as ACTUAL_IN,
+extract( hour from (MIN(ps.PUNCH_IN_DATE)-emp.SCHEDULE_TIME_IN) ) as IN_DIFF_HR,
+extract( minute from (MIN(ps.PUNCH_IN_DATE)-emp.SCHEDULE_TIME_IN) ) as IN_DIFF_MIN,
+extract( second from (MIN(ps.PUNCH_IN_DATE)-emp.SCHEDULE_TIME_IN) ) as IN_DIFF_SEC,
+(MIN(ps.PUNCH_IN_DATE)-emp.SCHEDULE_TIME_IN) as IN_DIFF,
+emp.SCHEDULE_TIME_OUT,
+MAX(ps.PUNCH_OUT_DATE) as ACTUAL_OUT
+FROM IGG_XX_EMPLOYEE_PUNCHING_SHEET ps, igg_xx_employee_daily_attendance emp
+where ps.EMP_ID=emp.EMP_ID
+and ps.PUNCH_STATUS in ('S','U')
+and emp.ATTENDANCE_DATE=trunc(ps.CREATED_DATE)
+--and ps.EMP_ID='300000002179710' and trunc(ps.CREATED_DATE)='01-FEB-2020'
+group by 
+emp.SCHEDULE_TIME_IN,
+emp.SCHEDULE_TIME_OUT;
+
+
