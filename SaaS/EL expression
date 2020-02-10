@@ -1,0 +1,5 @@
+#{EndPointProvider.externalEndpointByModuleShortName['Property Lease']}/faces/adf.task-flow?adf.tfId=PropertyLease_BTF&adf.tfDoc=/WEB-INF/PropertyLease_BTF.xml&jwt=#{applCoreSecuredToken.trustToken}
+
+#{securityContext.userInRole['PRISM_ADMIN']}
+
+#{securityContext.userInRole['PRISM']}
