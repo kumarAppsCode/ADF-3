@@ -1,0 +1,4 @@
+@Id
+    @GeneratedValue(generator = "abc")
+    @SequenceGenerator(name = "abc", sequenceName = "xxpm_property_id_s", allocationSize = 1)
+    @Column(name = "ID")
