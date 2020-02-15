@@ -1,0 +1,14 @@
+NOT in 
+ViewObject rcptVo3 =
+                        ADFUtils.findIterator("Receipt_VO3Iterator").getViewObject();
+                    ViewObject rcptVo2 =
+                        ADFUtils.findIterator("Receipt_VO2Iterator").getViewObject();
+                    ViewCriteria vc = rcptVo2.createViewCriteria();
+                    ViewCriteriaRow vcRow = vc.createViewCriteriaRow();
+                    vcRow.setAttribute("BookingId", rcptVo3.getCurrentRow().getAttribute("BookingId"));
+                    vcRow.setAttribute("SourceFuncId", "not like 15 ");
+                    vc.addRow(vcRow);
+                    rcptVo2.applyViewCriteria(vc);
+                    rcptVo2.executeQuery();
+                    System.out.println("nos.... of rcpt :" + rcptVo2.getEstimatedRowCount());
+******************************************
