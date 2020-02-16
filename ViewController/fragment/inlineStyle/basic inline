@@ -1,0 +1,2 @@
+column colour
+background-color:#{(row.bindings.PresentAbsFlag.inputValue eq 1)?'#00D46A':(row.bindings.PresentAbsFlag.inputValue eq 4)?'red':(row.bindings.PresentAbsFlag.inputValue eq 2)?'yellow':(row.bindings.PresentAbsFlag.inputValue eq 5)?'#DADAD5':(row.bindings.PresentAbsFlag.inputValue eq 3)?'#ADBED5':(row.bindings.PresentAbsFlag.inputValue eq 0)?'white':'white'};
