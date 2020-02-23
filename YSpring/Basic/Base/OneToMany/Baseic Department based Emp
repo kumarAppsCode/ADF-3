@@ -1,9 +1,4 @@
-Employee table 
-
-@JoinColumn(name = "DEP_ID")
-    private BigDecimal DEP_ID;
-    
-**************************************************    
+   **************************************************    
     @OneToMany(mappedBy = "DEP_ID")
     // @JoinColumn(name = "de_fk", referencedColumnName = "DEP_ID")
     private List<EmployeeEntity> employeeEntity;
@@ -16,3 +11,8 @@ Employee table
         this.employeeEntity = employeeEntity;
     }
 **************************************************    
+
+Employee table 
+
+@JoinColumn(name = "DEP_ID")
+    private BigDecimal DEP_ID;
