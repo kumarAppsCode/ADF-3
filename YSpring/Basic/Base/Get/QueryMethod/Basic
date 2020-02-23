@@ -5,3 +5,47 @@
         
     //  localhost:8080/api/function/funname?name=Accounts Receivables - Details
 ************************************************************************************************
+//****************************************************************************************//
+    @GetMapping(value="/function/{funname}")
+    public List<FunctionEntity> getMethodNamep(@PathVariable String funname) {
+        return functionDto.findByFuncName(funname);
+    }
+    // localhost:8080/api/function/Accounts Receivables - Details
+//****************************************************************************************//
+
+@GetMapping(value="/function2/{funname}/{funcode}")
+public List<FunctionEntity> getMethodName(@PathVariable String funname, 
+                                          @PathVariable String funcode) {
+System.out.println("funname==>"+funname);
+System.out.println("funcode==>"+funcode);
+
+    if(funcode.isEmpty() && funname.isEmpty()){
+        return functionDto.findAll();
+    }else{
+        if(funcode.isEmpty()){
+            return functionDto.findByFuncName(funname);
+           }else{
+             return functionDto.findByFuncNameAndFuncShortCode(funname, funcode);
+           }
+    }
+}
+
+    // localhost:8080/api/function1?funname=Inventory Unit Details Reports&funcode=AI
+//****************************************************************************************//
+     
+    @GetMapping(value="/function1")
+public List<FunctionEntity> getMethodName123(@RequestParam String funname, 
+                                          @RequestParam String  funcode) {
+System.out.println("funname==>"+funname);
+System.out.println("funcode==>"+funcode);
+    if(funcode.isEmpty() && funname.isEmpty()){
+       return getFunction();
+    }else{
+        if(funcode.isEmpty()){
+            return getMethodNamep(funname);
+           }else{
+             return functionDto.findByFuncNameAndFuncShortCode(funname, funcode);
+           }
+    }
+
+    // localhost:8080/api/function1?funname=Inventory Unit Details Reports&funcode=AI
