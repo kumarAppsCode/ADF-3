@@ -1,4 +1,12 @@
-   **************************************************    
+    @OneToMany(targetEntity = ReportParaEntity.class, cascade = CascadeType.ALL, mappedBy = "funcId") (2nd table name)
+        // @JoinColumn(name = "funcIds", referencedColumnName = "funcId")
+    public List<ReportParaEntity> reportParaEntity;
+
+@JoinColumn(name = "FUNC_ID")
+private Long funcId; 
+    
+
+**************************************************    
    Department based employe
     @OneToMany(mappedBy = "DEP_ID")
     private List<EmployeeEntity> employeeEntity;
