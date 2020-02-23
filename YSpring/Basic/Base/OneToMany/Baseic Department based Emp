@@ -18,7 +18,7 @@ Employee table
     private BigDecimal DEP_ID;
 
 *******************************************************************************************************    
-
+Direct Heder table mapping
 @OneToMany(targetEntity = ReportParaEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "FUNC_ID", referencedColumnName = "FUNC_ID")
     public List<ReportParaEntity> reportParaEntity;
