@@ -1,0 +1,7 @@
+ @GetMapping(value="/function/funname")
+     public List<FunctionEntity> getMethodName(@RequestParam  String name) {
+         return functionDto.findByFuncName(name);
+     }
+        
+    //  localhost:8080/api/function/funname?name=Accounts Receivables - Details
+************************************************************************************************
