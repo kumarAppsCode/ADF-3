@@ -1,4 +1,5 @@
    **************************************************    
+   Department based employe
     @OneToMany(mappedBy = "DEP_ID")
     private List<EmployeeEntity> employeeEntity;
 
