@@ -1,0 +1,26 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pub="http://xmlns.oracle.com/oxp/service/PublicReportService">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <pub:runReport>
+         <pub:reportRequest>
+            
+            <pub:parameterNameValues>
+               <!--Zero or more repetitions:-->
+               <pub:item>
+                 
+                  <pub:name>p_last_update_date</pub:name>
+                  
+                  <pub:values>
+                     <!--Zero or more repetitions:-->
+                     <pub:item>01-01-2018</pub:item>
+                  </pub:values>
+               </pub:item>
+            </pub:parameterNameValues>
+            <pub:reportAbsolutePath>/Custom/Sub Contract_UAT/Reports/ddfd.xdo</pub:reportAbsolutePath>
+           
+         </pub:reportRequest>
+         <pub:userID>dfds</pub:userID>
+         <pub:password>Rd4q3XTS</pub:password>
+      </pub:runReport>
+   </soapenv:Body>
+</soapenv:Envelope>
