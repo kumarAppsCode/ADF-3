@@ -1,0 +1,12 @@
+begin
+SELECT EMP_ID into P_EMP_IDS 
+FROM 
+IGG_XX_EMPLOYEE_DETAILS_SAAS 
+where 
+ROWNUM=1
+AND EMP_NUMBER=P_EMP_ID;
+exception when others then
+--raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
+P_EMP_IDS:=null;
+end;
+DBMS_OUTPUT.put_line('P_EMP_IDS-->'||P_EMP_IDS);
