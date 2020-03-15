@@ -1,0 +1,54 @@
+import java.util.*;
+import java.sql.*;  
+class PreparedRunTime
+{
+
+
+public static void main(String args[])
+{
+
+	Scanner ss=new Scanner (System.in);
+	
+	try
+	{  
+ 		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@00.00.1.00:1521:orcl","development","development"); 
+		
+		PreparedStatement stmt= con.prepareStatement("insert into dept732 values  (?,?)");
+		
+		System.out.println("Enter no.of row want to add:");
+		int n=ss.nextInt();
+		
+		
+		for(int j=0;j<n;j++)
+		{
+		System.out.println("Enter dept id and dept name : ");
+		int did=ss.nextInt();
+		String dname= ss.next();
+		
+		stmt.setInt(1,did);
+		stmt.setString(2,dname);
+		
+		stmt.executeUpdate(); 
+		}
+		
+
+	
+		System.out.println(n+" row inserted");
+		
+		ResultSet rs=stmt.executeQuery("select dep_id, dept_name from dept732");  
+
+	while(rs.next())  
+	{
+		System.out.println(rs.getInt(1)+"  "+rs.getString(2));  	
+	}
+
+	con.close();  
+	}
+
+
+	catch(Exception e)	{ 	System.out.println(e);	}
+	
+	
+}  
+}  
