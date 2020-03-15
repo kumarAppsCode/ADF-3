@@ -1,0 +1,39 @@
+
+import java.sql.*;  
+class Retrieve
+{ 
+
+public static void main(String args[])
+{
+	
+	try
+	{  
+ 		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@172.16.1.196:1521:orcl","development","development"); 
+		Statement stmt=con.createStatement(); 
+		
+		ResultSet rs=stmt.executeQuery("select *from filetest");  
+
+	while(rs.next())  
+	{
+		System.out.println(rs.getInt(1)+"  "+rs.get(2));  	
+	}
+
+	con.close();  
+	}
+
+
+	catch(Exception e)	{ 	System.out.println(e);	}
+	
+	
+}  
+}  
+
+
+
+
+
+
+
+
+//set classpath=C:\OJDBC6\ojdbc7.jar;.;
