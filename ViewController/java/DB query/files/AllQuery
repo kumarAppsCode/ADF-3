@@ -1,0 +1,144 @@
+import java.util.*;
+import java.sql.*;  
+class AllQuery
+{ 
+
+  public static Connection gettingConnection()
+  {	
+	Connection ct=null;
+	
+	try
+	{ 
+	Class.forName("oracle.jdbc.driver.OracleDriver");
+	ct=DriverManager.getConnection("jdbc:oracle:thin:@172.16.1.196:1521:orcl","development","development"); 
+	}
+	catch(Exception e)
+	{
+	System.out.println(e.getMessage());
+	}
+	
+
+  return ct;
+  }
+ 
+
+ public static void insertNewRow()
+	{
+	Scanner ss=new Scanner (System.in);
+	try
+	{
+		Connection con=gettingConnection();
+		PreparedStatement stmt= con.prepareStatement("insert into dept732 values  (?,?)");	
+		
+		System.out.println("Enter no.of row want to add:");
+		int n=ss.nextInt();
+				
+		for(int j=0;j<n;j++)
+		{
+		System.out.println("Enter dept id and dept name : ");
+		int did=ss.nextInt();
+		String dname= ss.next();
+		
+		stmt.setInt(1,did);
+		stmt.setString(2,dname);
+		
+		stmt.executeUpdate(); 
+		}		
+		System.out.println(n+" row inserted");
+	}
+	catch(Exception e)	{	}
+	}
+	
+	
+	
+	public static void updateExistingRow()
+	{
+	try
+	{ 
+		Connection con=gettingConnection();
+		
+		PreparedStatement st= con.prepareStatement("update dept732 set dept_name = 'Reception' where dep_id= 34");
+		
+		st.executeUpdate();
+		
+		System.out.println("1 row updataed");
+	}
+		catch(Exception e)	{	}
+		
+	}
+	
+	public static void deleteExistingRow()
+	{
+	try
+	{ 
+		Scanner ss=new Scanner (System.in);
+		Connection con=gettingConnection();
+		
+		PreparedStatement st= con.prepareStatement("delete from dept732 where dep_id= ?");
+		
+		System.out.println("Enter dept id which you want delete : ");
+		
+		int del=ss.nextInt();
+		
+		st.setInt(1,del);
+		
+		st.executeUpdate();
+	}
+		catch(Exception e)	{	}
+	
+	}	
+	
+	public static void showTable()
+	{
+	try
+	{ 
+		Connection con=gettingConnection();
+		Statement stmt= con.createStatement ();
+		ResultSet rs=stmt.executeQuery("select dep_id, dept_name from dept732");  
+
+		while(rs.next())  
+		{
+			System.out.println(rs.getInt(1)+"  "+rs.getString(2));  	
+		}
+	}
+	catch(Exception e)	{	}
+	}
+	
+
+
+
+	public static void main(String args[])
+	{
+	gettingConnection();
+	Scanner ss=new Scanner (System.in);
+	showTable();
+	
+	
+	System.out.println("Do you want to insert records??");
+	String iyes=ss.next();
+	if(iyes.equals("yes"))
+	{
+	insertNewRow();
+	}
+	
+	System.out.println("Do you want to update records??");
+	String uyes=ss.next();
+	if(uyes.equals("yes"))
+	{
+	updateExistingRow();
+	}
+	
+	System.out.println("Do you want to delete records??");
+	String dyes=ss.next();
+	if(dyes.equals("yes"))
+	{
+	deleteExistingRow();
+	}
+	System.out.println("***After Updation***");
+	showTable();
+	
+	}
+
+
+  
+}  
