@@ -1,0 +1,30 @@
+
+
+public static String getOneColumnValue(String reportName, String columnName) {
+       
+        String retrunVal = null;
+        Connection connection = null;
+        try {
+            connection = dbInitialization(connection);
+            String sql = null;
+            sql = "SELECT " + columnName + " AS COLUMN_VALUE FROM XXFND_SCHEDULE_T where SCHEDULE_NAME ='" + reportName + "'";
+            System.out.println(":::: sql - "+sql);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    retrunVal = resultSet.getString("COLUMN_VALUE") == null ? "" : resultSet.getString("COLUMN_VALUE");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CallDBQuery.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                dbDestroy(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(CallDBQuery.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(":::: retrunVal - "+retrunVal);
+            return retrunVal;
+        }
+    }
