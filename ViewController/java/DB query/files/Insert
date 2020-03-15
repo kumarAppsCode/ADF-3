@@ -1,0 +1,37 @@
+
+import java.sql.*;  
+class Insert
+{ 
+
+public static void main(String args[])
+{
+	
+	try
+	{  
+ 		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@00.16.1.00:1521:orcl","development","development"); 
+		Statement stmt=con.createStatement(); 
+		
+		int result=stmt.executeUpdate("insert into dept732 values  ( 70, 'Finance')");  
+		
+		if(result==1)
+		{
+			System.out.println("1 row inserted\n");
+		}
+		
+		ResultSet rs=stmt.executeQuery("select dep_id, dept_name from dept732");  
+
+	while(rs.next())  
+	{
+		System.out.println(rs.getInt(1)+"  "+rs.getString(2));  	
+	}
+
+	con.close();  
+	}
+
+
+	catch(Exception e)	{ 	System.out.println(e);	}
+	
+	
+}  
+}  
