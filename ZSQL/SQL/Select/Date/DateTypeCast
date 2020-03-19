@@ -1,0 +1,4 @@
+SELECT 
+CAST(sysdate as timestamp), 
+CAST(sysdate + interval '10' minute as timestamp)
+FROM dual
