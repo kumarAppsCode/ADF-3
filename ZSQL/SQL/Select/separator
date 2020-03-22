@@ -1,0 +1,21 @@
+8-8-8-8-8-0-8
+8.5-8.5-8.5-8.5-8.5-0-0
+8-8-8-0-8-8-8
+8-8-8-8-0-6-8
+10-10-10-0-0-10-10
+10-10-0-10-10-10-10
+9-9-9-9-9-0-0
+8.5-8.5-8.5-8.5-0-5.5-8.5
+9.5-9.5-9.5-9.5-0-9.5-9.5
+
+SELECT 
+distinct SCH, 
+substr(SCH, 1, INSTR(SCH, '-', 1)-1) as l_monday,
+substr(SCH, 1, INSTR(SCH, '-', 2)-1) as l_tuesday
+,substr(SCH,INSTR(SCH, '-', 1, 2)+1, INSTR(SCH, '-', 1, 3)-INSTR(SCH, '-', 1, 2)-1) as wednes
+,SUBSTR(SCH,INSTR(SCH, '-', 1, 1)+1, INSTR(SCH, '-', 1, 4)-INSTR(SCH, '-', 1, 3)-1) as thurday
+,SUBSTR(SCH,INSTR(SCH, '-', 1, 4)+1, INSTR(SCH, '-', 1, 5)-INSTR(SCH, '-', 1, 4)-1) as Friday
+,SUBSTR(SCH,INSTR(SCH, '-', 1, 5)+1, INSTR(SCH, '-', 1, 6)-INSTR(SCH, '-', 1, 5)-1) as saturday
+,SUBSTR(SCH,INSTR(SCH, '-', 1, 5)+1, INSTR(SCH, '-', 1, 6)-INSTR(SCH, '-', 1, 5)-1) as saturday
+,SUBSTR(SCH,INSTR(SCH, '-', 1, 6)+1, Length(SCH)) as Sunday
+FROM IGG_XX_WORK_SCHEDULE_INFO_SAAS;
