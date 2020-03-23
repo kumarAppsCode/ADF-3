@@ -1,0 +1,16 @@
+create or replace function igg_xx_getWeek_off(l_days date)
+return number as 
+l_weekdaysCount number;
+begin 
+SELECT 
+COUNT(*) 
+into l_weekdaysCount
+FROM igg_xxlookup_v 
+WHERE 
+LOOKUP_TYPE_NAME='WEEK-OFF' AND upper(LOOKUP_VALUE_NAME) like upper(substr(TO_CHAR (l_days,'Day'), 0 , 4))||'%';
+--like upper(p_weekoffDays)||'%';
+return l_weekdaysCount;
+exception 
+when no_data_found then
+l_weekdaysCount:=0;
+end;
