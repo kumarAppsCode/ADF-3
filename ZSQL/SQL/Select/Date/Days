@@ -1,0 +1,6 @@
+
+
+select to_char(date'2018-01-01', 'DAY') full_name,  
+       to_char(date'2018-01-01', 'DY') abbreviation,  
+       to_char(date'2018-01-01', 'D') day_of_week  
+from   dual
