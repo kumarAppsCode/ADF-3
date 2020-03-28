@@ -1,0 +1,30 @@
+<af:panelGroupLayout id="pgl3" layout="horizontal" halign="end">
+                           <af:link id="bl1" actionListener="#{backingBeanScope.FilmStripBean.showFSDropDown}"
+                                    visible="#{sessionScope.hideStrip eq true}" shortDesc="Show Film Strip"
+                                    icon="/images/func_arrowheaddown_16_act.png"/>
+                           <af:link id="bl2" actionListener="#{backingBeanScope.FilmStripBean.hideFSDropDown}"
+                                    visible="#{sessionScope.hideStrip ne true}" shortDesc="Hide the Film Strip"
+                                    icon="/images/func_arrowheadup_16_act.png"/>
+                        </af:panelGroupLayout>
+    public void hideFSDropDown(ActionEvent actionEvent) {
+        ADFUtils.setEL("#{sessionScope.hideStrip}", true);
+        ADFUtils.setEL("#{sessionScope.hideStripToggle}", true);
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        UIViewRoot vr = fctx.getViewRoot();
+        RichPanelGroupLayout pg = (RichPanelGroupLayout)vr.findComponent("pt1:filmStripPG");
+        if(pg!=null){
+            AdfFacesContext adfFacesContext = AdfFacesContext.getCurrentInstance();
+            adfFacesContext.addPartialTarget(pg);
+        }
+    }
+    public void showFSDropDown(ActionEvent actionEvent) {
+        ADFUtils.setEL("#{sessionScope.hideStrip}", false);
+        ADFUtils.setEL("#{sessionScope.hideStripToggle}", false);
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        UIViewRoot vr = fctx.getViewRoot();
+        RichPanelGroupLayout pg = (RichPanelGroupLayout)vr.findComponent("pt1:filmStripPG");
+        if(pg!=null){
+            AdfFacesContext adfFacesContext = AdfFacesContext.getCurrentInstance();
+            adfFacesContext.addPartialTarget(pg);
+        }
+    }
