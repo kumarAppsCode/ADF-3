@@ -1,0 +1,89 @@
+Button 
+
+enforcePreventUserInput
+action
+*************************
+<af:resource type="javascript">
+                  function onPopupOpened(event) {
+                      AdfCustomEvent.queue(event.getSource(), "popupOpenListner", 
+                      {
+                      },
+                      false);
+                  }
+                </af:resource>
+<af:popup id="busyPopup_2" clientComponent="true" contentDelivery="immediate">
+                                    <af:dialog id="d23" type="none" closeIconVisible="false">
+                                        <af:image source="/images/processing.gif" shortDesc="Loading" id="i12"/>
+                                        <f:facet name="buttonBar"/>
+                                    </af:dialog>
+                                    <af:clientListener method="onPopupOpened" type="popupOpened"/>
+                                    <af:serverListener type="popupOpenListner"
+                                                       method="#{backingBeanScope.AddEditBlocking.processSearchQuery}"/>
+</af:popup>
+******
+    ADFContext adfCtx = ADFContext.getCurrent();
+    Map ps = adfCtx.getPageFlowScope();
+        
+        public void processQuery(QueryEvent queryEvent){
+            setQEvent(queryEvent); //Save the query event for the method that really fires the query to use.
+            ps.put("queryEvent", queryEvent);
+            toggleBusyPopup(true); //Fires a popup, which inturn fires a serverListener.
+          }
+        
+        private QueryEvent qEvent = null;
+        
+        public void toggleBusyPopup(boolean isShown){
+            FacesContext context = FacesContext.getCurrentInstance();
+            RichPopup popup = (RichPopup) JSFUtils.findComponentInRoot("busyPopup_2");
+            ExtendedRenderKitService service =
+              Service.getRenderKitService(context, ExtendedRenderKitService.class);
+            if (isShown){
+              service.addScript(context,
+                                "var popup = AdfPage.PAGE.findComponent(\"" +
+                                popup.getClientId(context) + "\"); popup.show();");
+            }
+            else{
+              service.addScript(context,
+                                "var popup = AdfPage.PAGE.findComponent(\"" +
+                                popup.getClientId(context) + "\"); popup.hide();");
+            }
+            return;
+          }
+        
+        public void processSearchQuery(ClientEvent clientEvent)
+          {
+            // Do query : //
+            qEvent = (QueryEvent) ps.get("queryEvent");
+            invokeMethodExpression("#{bindings.SearchBlockingVCQuery.processQuery}",
+                                   Object.class, QueryEvent.class, qEvent);
+            AdfFacesContext.getCurrentInstance().addPartialTarget(JSFUtils.findComponentInRoot("resId2"));
+            toggleBusyPopup(false);
+          }
+        
+        private Object invokeMethodExpression(String expr, Class returnType,
+                                              Class argType, Object argument)
+        {
+          return invokeMethodExpression(expr, returnType, new Class[]
+              { argType }, new Object[]
+              { argument });
+        }
+        
+        private Object invokeMethodExpression(String expr, Class returnType,
+                                              Class[] argTypes, Object[] args)
+        {
+          FacesContext fc = FacesContext.getCurrentInstance();
+          ELContext elctx = fc.getELContext();
+          ExpressionFactory elFactory =
+            fc.getApplication().getExpressionFactory();
+          MethodExpression methodExpr =
+            elFactory.createMethodExpression(elctx, expr, returnType, argTypes);
+          return methodExpr.invoke(elctx, args);
+        }
+
+        public void setQEvent(QueryEvent qEvent) {
+            this.qEvent = qEvent;
+        }
+
+        public QueryEvent getQEvent() {
+            return qEvent;
+        }
