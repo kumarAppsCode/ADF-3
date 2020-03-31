@@ -1,0 +1,9 @@
+SELECT
+RECORDS_FROM_DATE,
+cast(sysdate as timestamp),
+frequency_min,
+cast(sysdate + (to_number(frequency_min)/1440) as timestamp)
+FROM
+xxfnd_schedule_t
+WHERE
+schedule_name = 'Vendor';
