@@ -1,0 +1,21 @@
+        ViewObjectImpl LKvo = (ViewObjectImpl)lookupVO;
+        ViewCriteria LKvc = LKvo.getViewCriteria("findByLMBatchEdit");
+        LKvo.applyViewCriteria(LKvc);
+        LKvo.executeQuery();
+        try{
+            managerCount=lookupVO.first().getAttribute("LookupValueNameDisp")==null?3:Integer.parseInt(lookupVO.first().getAttribute("LookupValueNameDisp").toString());
+            System.err.println("==managerCount==>"+managerCount);
+        }catch(Exception e){
+            managerCount=3;
+        }        
+        
+        
+        /////////////
+        
+         public void searchEmployee(Number employeeId) {
+        ViewObjectImpl vo = getEmployeesView1();
+        ViewCriteria vc = vo.getViewCriteria("findEmployeeVC");
+        vo.applyViewCriteria(vc);
+        vo.setNamedWhereClauseParam("pEmployeeId", employeeId);
+        vo.executeQuery();
+    }
