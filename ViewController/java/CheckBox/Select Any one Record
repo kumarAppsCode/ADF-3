@@ -1,0 +1,21 @@
+Primary Owner
+
+public void onChangePrimaryOwner(ValueChangeEvent valueChangeEvent) {
+       valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+//       if(valueChangeEvent.getNewValue()!=null){
+           RowSetIterator dtlsRS = UnitOwnerVO.createRowSetIterator(null);
+            int currIndex = UnitOwnerVO.getCurrentRowIndex();
+            System.err.println("currIndex"+currIndex);
+            int i = 0;
+            while (dtlsRS.hasNext()) {
+              Row r = dtlsRS.next();
+                if (i == currIndex) {
+                     i++;
+                 continue;
+              }
+              r.setAttribute("TransientCheckBox", Boolean.FALSE);
+                  i++;
+            }
+           AdfFacesContext.getCurrentInstance().addPartialTarget(getT11());    
+//       }
+    }
