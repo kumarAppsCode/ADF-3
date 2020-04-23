@@ -1,0 +1,110 @@
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "XXPL_MARCH"."XXPL_SEARCH_PRICELIST_V" ("PL_ID", "PL_NAME", "PL_NUMBER", "PL_NAME_TL", "DESCRIPTION", "ORG_ID", "FUNC_ID", "PL_TYPE", "PRIORITY", "USAGE", "CURRENCY_CODE", "START_DATE", "END_DATE", "REVISION_NO", "REVISION_DATE", "REVISED_BY", "STATUS", "FLOW_STATUS", "FLOW_WITH", "FLOW_LEVEL", "USER_GRP_ID", "ATTRIBUTE_CATEGORY", "ATTRIBUTE1", "ATTRIBUTE2", "ATTRIBUTE3", "ATTRIBUTE4", "ATTRIBUTE5", "ATTRIBUTE6", "ATTRIBUTE7", "ATTRIBUTE8", "ATTRIBUTE9", "ATTRIBUTE10", "ACTIVE_YN", "OBJECT_VERSION", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE", "LAST_UPDATE_LOGIN", "PROPERTY_NAME", "BUILD_NAME", "UNIT_NAME", "ORG_NAME") AS 
+  SELECT 
+pl.PL_ID              ,
+pl.PL_NAME            ,
+pl.PL_NUMBER          ,
+pl.PL_NAME_TL         ,
+pl.DESCRIPTION        ,
+pl.ORG_ID             ,
+pl.FUNC_ID            ,
+pl.PL_TYPE            ,
+pl.PRIORITY           ,
+pl.USAGE              ,
+pl.CURRENCY_CODE      ,
+pl.START_DATE         ,
+pl.END_DATE           ,
+pl.REVISION_NO        ,
+pl.REVISION_DATE      ,
+pl.REVISED_BY         ,
+pl.STATUS             ,
+pl.FLOW_STATUS        ,
+pl.FLOW_WITH          ,
+pl.FLOW_LEVEL         ,
+pl.USER_GRP_ID        ,
+pl.ATTRIBUTE_CATEGORY ,
+pl.ATTRIBUTE1         ,
+pl.ATTRIBUTE2         ,
+pl.ATTRIBUTE3         ,
+pl.ATTRIBUTE4         ,
+pl.ATTRIBUTE5         ,
+pl.ATTRIBUTE6         ,
+pl.ATTRIBUTE7         ,
+pl.ATTRIBUTE8         ,
+pl.ATTRIBUTE9         ,
+pl.ATTRIBUTE10        ,
+pl.ACTIVE_YN          ,
+pl.OBJECT_VERSION     ,
+pl.CREATED_BY         ,
+pl.CREATION_DATE      ,
+pl.LAST_UPDATED_BY    ,
+pl.LAST_UPDATE_DATE   ,
+pl.LAST_UPDATE_LOGIN  ,
+--pl.PROPERTY_ID        , 
+--pl.BUILD_ID ,
+--pll.UNIT_ID ,
+--pm.PROPERTY_NAME,
+--pb.BUILD_NAME,
+--pu.UNIT_NAME,
+(select LISTAGG(PROPERTY_NAME, ',') WITHIN GROUP (ORDER BY PROPERTY_NAME) from xxpl_property_master) AS PROPERTY_NAME,
+(select LISTAGG(BUILD_NAME, ',') WITHIN GROUP (ORDER BY BUILD_NAME) from xxpl_property_buildings) AS BUILD_NAME,
+ (SELECT rtrim(xmlagg(XMLELEMENT(e,UNIT_NAME,',').EXTRACT('//text()')
+                       ).GetClobVal(),',') UNIT_NAME
+    FROM
+     (SELECT UNIT_NAME FROM xxpl_property_units 
+     ))UNIT_NAME
+,ORG_NAME
+FROM xxpl_pl_header pl , xxpl_pl_lines pll
+,xxstg_organizations org
+--,xxpl_property_master pm 
+--,xxpl_property_buildings pb
+--, xxpl_property_units pu
+where 
+pll.PL_ID=pl.PL_ID
+and org.org_id=pl.org_id
+--and pl.PROPERTY_ID=pl.PROPERTY_ID
+--and pl.BUILD_ID=pll.BUILD_ID
+--and pm.PROPERTY_ID=pll.PROPERTY_ID
+--and pb.BUILD_ID=pll.BUILD_ID
+--and pu.UNIT_ID=pll.UNIT_ID
+group by 
+pl.PL_ID              ,
+pl.PL_NAME            ,
+pl.PL_NUMBER          ,
+pl.PL_NAME_TL         ,
+pl.DESCRIPTION        ,
+pl.ORG_ID             ,
+pl.FUNC_ID            ,
+pl.PL_TYPE            ,
+pl.PRIORITY           ,
+pl.USAGE              ,
+pl.CURRENCY_CODE      ,
+pl.START_DATE         ,
+pl.END_DATE           ,
+pl.REVISION_NO        ,
+pl.REVISION_DATE      ,
+pl.REVISED_BY         ,
+pl.STATUS             ,
+pl.FLOW_STATUS        ,
+pl.FLOW_WITH          ,
+pl.FLOW_LEVEL         ,
+pl.USER_GRP_ID        ,
+pl.ATTRIBUTE_CATEGORY ,
+pl.ATTRIBUTE1         ,
+pl.ATTRIBUTE2         ,
+pl.ATTRIBUTE3         ,
+pl.ATTRIBUTE4         ,
+pl.ATTRIBUTE5         ,
+pl.ATTRIBUTE6         ,
+pl.ATTRIBUTE7         ,
+pl.ATTRIBUTE8         ,
+pl.ATTRIBUTE9         ,
+pl.ATTRIBUTE10        ,
+pl.ACTIVE_YN          ,
+pl.OBJECT_VERSION     ,
+pl.CREATED_BY         ,
+pl.CREATION_DATE      ,
+pl.LAST_UPDATED_BY    ,
+pl.LAST_UPDATE_DATE   ,
+pl.LAST_UPDATE_LOGIN  ,
+ORG_NAME;
