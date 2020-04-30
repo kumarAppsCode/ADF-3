@@ -1,0 +1,26 @@
+https://xx-test.fa.em2.oraclecloud.com/xmlpserver/services/PublicReportService
+
+https://ejds-test.fa.em2.oraclecloud.com/xmlpserver/services/PublicReportService?wsdl
+
+=================
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pub="http://xmlns.oracle.com/oxp/service/PublicReportService">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <pub:runReport>
+         <pub:reportRequest>
+            <pub:parameterNameValues>
+               <pub:item>
+                  <pub:name>p_last_update_date</pub:name>
+                  <pub:values>
+                     <pub:item>03-01-2020</pub:item>
+                  </pub:values>
+               </pub:item>
+            </pub:parameterNameValues>
+            <pub:reportAbsolutePath>Custom/Sub Contract_UAT/Reports/SC PO Headers.xdo</pub:reportAbsolutePath>
+         </pub:reportRequest>
+         <pub:userID>Projects</pub:userID>
+         <pub:password>qwerty123</pub:password>
+      </pub:runReport>
+   </soapenv:Body>
+</soapenv:Envelope>
+====================================
