@@ -1,0 +1,21 @@
+PROCEDURE UPDATE_NEXT_SCHEDULE_TIME (SCHEDULER_P varchar2);
+
+
+
+
+
+PROCEDURE UPDATE_NEXT_SCHEDULE_TIME (SCHEDULER_P varchar2)
+AS
+BEGIN 
+
+UPDATE xxfnd_schedule_t
+SET
+    last_schedule_time = SYSDATE,
+    records_from_date = SYSDATE,
+    next_schedule_time = cast(sysdate + (to_number(frequency_min)/1440) as timestamp)
+--    SYSDATE + INTERVAL '10' MINUTE
+WHERE
+    schedule_name = scheduler_p;
+
+update_run_status(scheduler_p, 'Y');
+END UPDATE_NEXT_SCHEDULE_TIME;
