@@ -1,0 +1,68 @@
+
+    public static String invokeGroupSubmit(List<String> al, String hrName){
+        
+        String msg="<p>Dear&nbsp;"+hrName+"</p>\n" + 
+        "<p>Time&nbsp;card&nbsp;of the below list of batch has&nbsp;been submitted&nbsp;for the approval.</p>\n" + 
+        "<p><strong>List of Information</strong></p>\n" + 
+        "<table style=\"height: 84px; width: 658px; border-color: blue; float: left;\" border=\"1\">\n" + 
+        "<tbody>\n" + 
+        "<tr style=\"height: 25px;\">\n" + 
+        "<td style=\"width: 204px; text-align: center; height: 25px;\"><span style=\"color: #0000ff;\"><strong>Business Unit</strong></span></td>\n" + 
+        "<td style=\"width: 53.9414px; text-align: center; height: 25px;\"><span style=\"color: #0000ff;\"><strong>Employee Name</strong></span></td>\n" + 
+        "<td style=\"width: 209.059px; text-align: center; height: 25px;\"><span style=\"color: #0000ff;\"><strong>Batch Number</strong></span></td>\n" + 
+        "</tr>\n"; 
+    
+         Iterator<String> countriesIterator = al.iterator();
+         while(countriesIterator.hasNext()) {
+                 msg+= "<tr style=\"height: 24.0977px;\">" +
+                       "<td style=\"width: 204px; height: 24.0977px;\"><strong>"+countriesIterator.next()+"</strong></td>\n" +
+                       "<td style=\"width: 204px; height: 24.0977px;\"><strong>"+countriesIterator.next()+"</strong></td>\n" +
+                       "<td style=\"width: 204px; height: 24.0977px;\"><strong>"+countriesIterator.next()+"</strong></td>\n" +
+                       "</tr>\n";
+         }
+             
+        msg+="</tbody>\n" + 
+        "</table>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" +
+        "<p>&nbsp;</p>\n" + 
+        "<p>&nbsp;</p>\n" + 
+        "<p>Regards</p>\n" + 
+        "<p>Time&nbsp;and&nbsp;Attendance Alert Message</p>\n" + 
+        "<p>Human&nbsp;Capital&nbsp;Management</strong></p>\n" + 
+        "<p><span style=\"color: #ff0000;\">Note: This is a system generated mail so please do not reply to this mail</span></p>";
+        System.err.println("===>"+msg);
+        return msg;
+        
+    }
