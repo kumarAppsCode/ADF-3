@@ -1,0 +1,23 @@
+
+        // create multimap to store key and values
+        MultiMap multiMap = new MultiValueMap();
+
+                        multiMap.put(UnitHRMailId, buName);
+                        multiMap.put(UnitHRMailId, empName);
+                        multiMap.put(UnitHRMailId, batchNumber);
+                        
+            List<String> al= new ArrayList<String>();
+        // get all the set of keys
+        Set<String> keys = multiMap.keySet();
+        System.out.println("keys"+keys);
+        // iterate through the key set and display key and values
+         for (String key : keys) {
+            String[] name = multiMap.get(key).toString().split(",");
+            for(String na: name){
+                 System.err.println("na==>"+na);
+                al.add(na);
+             }
+            System.out.println("Key mail Id= " + key);
+            System.out.println("lmmailId"+lmmailId);
+            System.out.println("Uhr"+uhrName);
+            String mailContent = MailTemplate.invokeGroupSubmit(al, uhrName);
