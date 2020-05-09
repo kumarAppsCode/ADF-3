@@ -1,0 +1,3 @@
+AND 
+to_char(to_date(ATTENDANCE_DATE,'DD-MON-YYYY'),'MON')=
+to_char(to_date('13-MAR-2020','DD-MON-YYYY'),'MON')
