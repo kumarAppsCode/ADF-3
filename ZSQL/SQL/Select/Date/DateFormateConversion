@@ -1,0 +1,45 @@
+SELECT
+    COUNT(*) AS COMP_COUNT,
+    assignment_id,
+    effective_start_date,
+    effective_end_date,
+    person_id,
+    assignment_number,
+    organization_id,
+    job_id,
+    assignment_name,
+    assignment_status_type,
+    employment_category
+FROM
+    (
+        SELECT
+            assignment_id,
+            TO_CHAR(TO_DATE(effective_start_date, 'DD-MM-YY'), 'DD-MON-YYYY') AS effective_start_date,
+            TO_CHAR(TO_DATE(effective_end_date, 'DD-MM-YY'), 'DD-MON-YYYY') AS effective_end_date,
+            person_id,
+            assignment_number,
+            organization_id,
+            job_id,
+            assignment_name,
+            assignment_status_type,
+            employment_category
+        FROM
+            igg_xx_assignment_info_saas
+        WHERE
+            employment_category IN ('COMP_OFF')
+    )
+WHERE
+    person_id = 300000002022679
+    and effective_start_date >= '01-APR-2020'
+    AND '07-APR-2020' <= effective_end_date
+GROUP BY
+    assignment_id,
+    effective_start_date,
+    effective_end_date,
+    person_id,
+    assignment_number,
+    organization_id,
+    job_id,
+    assignment_name,
+    assignment_status_type,
+    employment_category
