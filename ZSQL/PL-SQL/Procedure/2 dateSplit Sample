@@ -1,0 +1,71 @@
+declare
+
+cursor c1 
+is
+select st_date , end_date , p_type ,p_amount from xx_tbl;
+
+
+Begin
+
+for i in c1
+loop
+
+l_pay_type := i.p_type;
+
+if l_pay_type = 'monthly' then
+l_add_months := 1;
+end if;
+
+if l_pay_type = 'quaterly' then
+l_add_months := 3;
+end if;
+
+if l_pay_type = 'half' then
+l_add_months := 6;
+end if;
+
+
+if l_pay_type = 'Yearly' then
+l_add_months := 12;
+end if;
+
+l_st_date := i.st_Date;
+l_end_date:= null;
+
+
+select  months_between(i.st_Date,i.end_date)  into l_tot_mont from dual; 
+
+
+l_amt:= (i.amt * l_add_months )/l_tot_mont;
+
+
+l_loop := l_tot_mont/l_add_months;
+
+
+l_cnt:= 1;
+
+
+while l_cnt <=  l_loop
+loop
+l_cnt := l_cnt+1;
+select add_months(l_st_date,l_add_months ) into l_end_date  from dual;
+
+
+
+
+
+dbms_output.put_line('l_st_date '||l_st_date ||'   ' ||' l_end_date  '||l_end_date ||'l_amt '|| l_amt);
+
+
+
+l_st_date:= l_end_date + 1;
+exit when l_end_date <= i.end_date;
+end loop;
+
+
+
+
+end loop;
+
+
+end;
