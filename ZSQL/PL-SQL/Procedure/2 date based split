@@ -1,0 +1,106 @@
+create or replace PROCEDURE XXPL_CREATE_NEW_BOOKING (
+                             P_BOOKIND_ID   IN             NUMBER,
+                             p_LOGIN_USER   IN             VARCHAR2,
+                             p_MSG          OUT            VARCHAR2,
+                             p_MSG_CODE     OUT            VARCHAR2
+                            )
+AS
+-- 1st Cursor
+CURSOR booking_info (l_booking_id NUMBER)
+is 
+SELECT
+bh.BOOKING_HDR_ID, 
+bh.MS_HDR_ID, 
+mh.MILESTONE_TYPE,
+bh.BOOKING_LEASE_START_DATE, 
+bh.BOOKING_LEASE_END_DATE,
+bh.PL_ID, 
+bd.PROPERTY_ID, 
+bd.BUILDING_ID,
+sum(nvl(bd.BASE_PRICE,0)),
+sum(nvl(bd.BOOKING_AMOUNT,0)),
+sum(nvl(bd.DISC_AMOUNT, 0)),
+bd.TAX_CODE, 
+sum(nvl(bd.TAX_RATE,0)) as TAX_RATE, 
+sum(nvl(bd.TAX_AMOUNT,0)),
+sum(nvl(bd.TOTAL_AMOUNT,0))as BOOKING_AMOUNT
+FROM
+xxpl_booking_detail bd, xxpl_booking_header bh, xxpl_milestones_hdr mh
+where bh.BOOKING_HDR_ID=bd.BOOKING_HDR_ID
+and mh.MS_HDR_ID=bh.MS_HDR_ID
+--and bh.BOOKING_HDR_ID=121
+and bh.BOOKING_HDR_ID=l_booking_id
+group by 
+bh.BOOKING_HDR_ID, 
+bh.MS_HDR_ID, 
+mh.MILESTONE_TYPE,
+bh.BOOKING_LEASE_START_DATE, 
+bh.BOOKING_LEASE_END_DATE,
+bh.PL_ID, 
+bd.PROPERTY_ID, 
+bd.BUILDING_ID,
+bd.TAX_CODE;
+
+l_pay_type varchar2(120);
+l_add_months number;
+l_st_date date;
+l_end_date date;
+l_tot_mont number;
+l_BOOKING_AMOUNT number;
+l_base_amount number;
+l_loop number;
+l_cnt number;
+l_percentage number;
+BEGIN
+--booking milstone
+for c1 in booking_info(P_BOOKIND_ID)
+loop
+l_pay_type:=c1.MILESTONE_TYPE;
+DBMS_OUTPUT.PUT_LINE('l_pay_type==>'||l_pay_type);
+-- monthly
+if l_pay_type='MONTHLY' then
+l_add_months := 1;
+elsif l_pay_type = 'QUARTERLY' then
+l_add_months := 3;
+elsif l_pay_type = 'HALF-YEARLY' then
+l_add_months := 6;
+elsif l_pay_type = 'YEARLY' then
+l_add_months := 12;
+else
+l_add_months := 1;
+end if;
+DBMS_OUTPUT.PUT_LINE('l_add_months==>'||l_add_months);
+--Date Process
+l_st_date:=c1.BOOKING_LEASE_START_DATE;
+l_end_date:=null;
+select MONTHS_BETWEEN(c1.BOOKING_LEASE_END_DATE,c1.BOOKING_LEASE_START_DATE) into l_tot_mont from dual;
+DBMS_OUTPUT.PUT_LINE('l_tot_mont==>'||round(l_tot_mont, 2));
+DBMS_OUTPUT.PUT_LINE('l_tot_mont 0==>'||round(l_tot_mont, 0));
+-- Amount Cal
+l_BOOKING_AMOUNT:=NVL(c1.BOOKING_AMOUNT,0);
+l_base_amount:=round((l_BOOKING_AMOUNT * l_add_months )/round(l_tot_mont, 2),2);
+l_percentage:=(l_base_amount/l_BOOKING_AMOUNT)*100;
+DBMS_OUTPUT.PUT_LINE('l_BOOKING_AMOUNT==>'||l_BOOKING_AMOUNT);
+DBMS_OUTPUT.PUT_LINE('l_base_amount==>'||l_base_amount);
+DBMS_OUTPUT.PUT_LINE('l_percentage==>'||l_percentage);
+l_loop := round(round(l_tot_mont, 2)/l_add_months,0);
+DBMS_OUTPUT.PUT_LINE('l_loop==>'||l_loop);
+l_cnt:= 1;
+--while loop
+dbms_output.put_line('l_st_date'||'====='||'l_end_date'||'====='||'Amount'||'====='||'%');
+while l_cnt <=  l_loop
+loop
+l_cnt := l_cnt+1;
+select ADD_MONTHS(l_st_date,l_add_months)-1 into l_end_date  from dual;
+
+dbms_output.put_line(l_st_date||'====='||l_end_date||'====='||l_base_amount||'====='||l_percentage);
+
+l_st_date:= l_end_date+1;
+--dbms_output.put_line('l_end_date==>'||l_end_date);
+--dbms_output.put_line('c1.BOOKING_LEASE_END_DATE==>'||c1.BOOKING_LEASE_END_DATE);
+exit when l_end_date >= c1.BOOKING_LEASE_END_DATE;
+end loop;
+
+end loop;
+
+END;
