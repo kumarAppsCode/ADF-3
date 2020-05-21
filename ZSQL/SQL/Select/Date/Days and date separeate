@@ -11,3 +11,6 @@ to_char(TO_DATE('01-APR-2020', 'DD-MON-YYYY'), 'DD'),
 to_char(TO_DATE('01-APR-2020', 'DD-MON-YYYY'), 'MON'),
 to_char(TO_DATE('01-APR-2020', 'DD-MON-YYYY'), 'YYYY')
 from dual;
+
+-- Month First day and last day 
+SELECT trunc(sysdate,'MONTH'), last_day(sysdate) FROM dual;
