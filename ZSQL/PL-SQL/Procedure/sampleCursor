@@ -1,0 +1,308 @@
+set SERVEROUTPUT ON;
+DECLARE
+cursor EMPLOYEE_INFO_ALL(bv_actual_time_in_from VARCHAR2, bv_actual_time_in_to VARCHAR2) 
+is 
+SELECT
+    emp.EMP_ID, 
+	emp.EMP_NUMBER, 
+	emp.EMP_NAME, 
+	emp.JOB_TITLE, 
+	emp.DEPARTMENT,
+	emp.GRADE, 
+	emp.GRADE_CODE, 
+	emp.LINE_MANAGER, 
+	emp.ORG_ID, 
+	emp.ORG_NAME, 
+	emp.EMAIL_ADDRESS
+FROM
+igg_xx_employee_daily_attendance empat, igg_xx_employee_details_saas_V emp
+where 
+empat.EMP_ID=emp.EMP_ID  
+AND empat.EMP_ID=empat.EMP_ID+0
+AND empat.ATTENDANCE_DATE=empat.ATTENDANCE_DATE+0
+and empat.BATCH_HDR_ID is null
+and trunc(empat.ATTENDANCE_DATE) 
+BETWEEN TO_DATE(bv_actual_time_in_from, 'DD-MON-YYYY') AND TO_DATE(bv_actual_time_in_to, 'DD-MON-YYYY')
+--and empat.EMP_ID=300000005629054
+--and empat.EMP_ID=NVL(l_emp_id, empat.EMP_ID)
+--and emp.ORG_ID=NVL(l_BU_ID, emp.ORG_ID)
+--and trunc(empat.ATTENDANCE_DATE) 
+--BETWEEN TO_DATE('01-MAR-2020', 'DD-MON-YYYY') AND TO_DATE('07-MAR-2020', 'DD-MON-YYYY')
+group by 
+    emp.EMP_ID, 
+	emp.EMP_NUMBER, 
+	emp.EMP_NAME, 
+	emp.JOB_TITLE, 
+	emp.DEPARTMENT,
+	emp.GRADE, 
+	emp.GRADE_CODE, 
+	emp.LINE_MANAGER, 
+	emp.ORG_ID, 
+	emp.ORG_NAME, 
+	emp.EMAIL_ADDRESS;
+--------
+--Declare
+pa_SYSDATE date;
+l_batchId number;
+l_BATCH_REQ_NO varchar2(240);
+l_BATCH_REQ_DATE date;
+l_BATCH_STATUS varchar2(240);
+l_WEEK_NUMBER number;
+l_YEAR_WEEK varchar2(240);
+l_year_weekno varchar2(240);
+l_manager_name varchar2(240);
+l_HR_name varchar2(240);
+l_MARK_ABSENT_AFTER_N number;
+l_EXTRA_WORK_HR number;
+latecount number;
+empdailyid number;
+l_manager_id number;
+l_UnitHR_id number;
+L_FROM_TIME VARCHAR2(60);
+L_TO_TIME   VARCHAR2(60);
+l_count number:=0;
+l_normalExcep VARCHAR2(1);
+l_emp_id number;
+l_BU_ID number;
+l_lm_id number;
+l_weeknum number;
+from_date Date;
+to_dates Date;
+l_batchCount number;
+P_RESULT VARCHAR2(30);
+P_FROM_TIME VARCHAR2(120):='15-MAR-2020';
+P_TO_TIME VARCHAR2(120):='21-MAR-2020';
+P_SYNC_TYPE VARCHAR2(120):='AUTO';
+P_STATUS VARCHAR2(20):='N';
+P_CREATED_BY VARCHAR2(20):='AUTO';
+----------
+BEGIN 
+--data formate setting
+begin
+execute immediate 'ALTER SESSION SET NLS_DATE_FORMAT=''DD-MON-YYYY''';
+end;
+------------
+--AUTO/MANULA
+begin
+--Variable setting
+--pa_SYSDATE:=sysdate-2;
+--pa_SYSDATE:=TO_DATE(P_TO_TIME, 'DD-MON-YYYY')-2;
+pa_SYSDATE:=TO_DATE(P_TO_TIME, 'DD-MON-YYYY')-2;
+--l_BATCH_REQ_NO:='WEEK.'||to_char(to_date(pa_SYSDATE,'DD-MON-YYYY'),'iW')||'.'||to_char(pa_SYSDATE,'YYYY')||'.';
+l_weeknum:=to_char(to_date(pa_SYSDATE,'DD-MON-YYYY'),'W');
+if(l_weeknum=5) then
+l_weeknum:=4;
+end if;
+l_BATCH_REQ_NO:='WEEK.'||l_weeknum||'.'||to_char(to_date(pa_SYSDATE,'DD-MON-YYYY'),'MON')||'.'||to_char(pa_SYSDATE,'YYYY')||'.';
+l_BATCH_REQ_DATE:=pa_SYSDATE;
+l_BATCH_STATUS:='Pending with LM';
+l_WEEK_NUMBER:=to_char(to_date(pa_SYSDATE,'DD-MON-YYYY'),'W');
+l_YEAR_WEEK:='WEEK_'||to_char(to_date(pa_SYSDATE,'DD-MON-YYYY'),'iW')||'_'||to_char(pa_SYSDATE,'YYYY');
+l_year_weekno:=to_char(to_date(pa_SYSDATE,'DD-MON-YYYY'),'iW');
+---
+--DBMS_OUTPUT.PUT('P_SYNC_TYPE-'||P_SYNC_TYPE);
+--DBMS_OUTPUT.PUT('P_SERVICES_METHOD-'||P_SERVICES_METHOD);
+------------
+IF(P_SYNC_TYPE='AUTO') THEN 
+    -- check week
+    if(l_weeknum=4) then
+        L_FROM_TIME:=to_date( '22-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'MON')||'-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'YYYY'), 'DD-MON-YYYY');
+        L_TO_TIME:=last_day(sysdate);
+        DBMS_OUTPUT.PUT('Week-'||l_weeknum||'From Date==>'||L_FROM_TIME||'ToDate='||L_TO_TIME);
+    elsif(l_weeknum=3) then
+        L_FROM_TIME :=to_date( '15-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'MON')||'-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'YYYY'), 'DD-MON-YYYY');
+        L_TO_TIME   :=to_date( '21-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'MON')||'-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'YYYY'), 'DD-MON-YYYY');
+        DBMS_OUTPUT.PUT('Week-'||l_weeknum||'From Date==>'||L_FROM_TIME||'ToDate='||L_TO_TIME);
+    elsif(l_weeknum=2) then
+        L_FROM_TIME :=to_date( '08-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'MON')||'-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'YYYY'), 'DD-MON-YYYY');
+        L_TO_TIME   :=to_date( '14-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'MON')||'-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'YYYY'), 'DD-MON-YYYY');
+        DBMS_OUTPUT.PUT('Week-'||l_weeknum||'From Date==>'||L_FROM_TIME||'ToDate='||L_TO_TIME);
+    elsif(l_weeknum=1) then
+        L_FROM_TIME :=to_date( '01-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'MON')||'-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'YYYY'), 'DD-MON-YYYY');
+        L_TO_TIME   :=to_date( '07-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'MON')||'-'||to_char(to_date(SYSDATE,'DD-MON-YYYY'),'YYYY'), 'DD-MON-YYYY');
+        DBMS_OUTPUT.PUT('Week-'||l_weeknum||'From Date==>'||L_FROM_TIME||'ToDate='||L_TO_TIME);
+    else
+        SELECT 
+        TO_CHAR(SYSDATE, 'DD-MON-YYYY'), TO_CHAR(SYSDATE-7, 'DD-MON-YYYY') 
+        INTO L_FROM_TIME,L_TO_TIME
+        FROM DUAL;
+    end if;
+ELSE
+    L_FROM_TIME:=P_FROM_TIME;
+    L_TO_TIME:=P_TO_TIME;
+END IF;
+exception
+when others then
+P_STATUS:='N';
+--return
+end;
+------------------
+for c1 in EMPLOYEE_INFO_ALL(P_FROM_TIME,P_TO_TIME) 
+    loop 
+    l_batchId :=BATCH_HDR_ID_S.nextval;
+        DBMS_OUTPUT.PUT_LINE('--l_batchId'||l_batchId);
+        DBMS_OUTPUT.PUT_LINE('--l_BATCH_REQ_NO'||l_BATCH_REQ_NO);
+        DBMS_OUTPUT.PUT_LINE('--l_YEAR_WEEK'||l_YEAR_WEEK);
+-------------------Manager---------------------------------
+        begin
+            select 
+            DISTINCT MANAGER_NAME, MANAGER_ID 
+            into l_manager_name , l_manager_id
+            from IGG_XX_EMPLOYEE_MANGER_V where EMP_ID=c1.EMP_ID;
+        exception 
+        when others then
+        l_manager_name:=300000002022604;
+        l_manager_name:='Akbar Moideen Thumbay';
+        end;
+        ---DBMS_OUTPUT.PUT_LINE('--Lm');
+------------------HR----------------------------------
+        begin
+            SELECT
+            DISTINCT  UNIT_HR_NAME, UNIT_HR_ID 
+            INTO l_hr_name, l_unithr_id
+            FROM
+                IGG_XX_EMPLOYEE_UNIT_HR_V
+            WHERE  EMP_ID=c1.EMP_ID;
+         exception
+         when others then
+            l_hr_name:='Pavan Paul Mardala Paul';
+            l_unithr_id:=300000001986758;
+        end;
+    ---DBMS_OUTPUT.PUT_LINE('--HR');    
+--------------Week Number--------------------------------------
+    if(l_WEEK_NUMBER=5) then 
+    l_WEEK_NUMBER:=4;
+    DBMS_OUTPUT.put_line('l_WEEK_NUMBER-->'||l_WEEK_NUMBER);
+    end if;
+----------------------------------------------------
+    begin
+    DBMS_OUTPUT.put_line('l_WEEK_NUMBER-->'||l_WEEK_NUMBER);
+    DBMS_OUTPUT.put_line('c1.EMP_ID-->'||c1.EMP_ID);
+    SELECT NVL(count(*),0) into l_batchCount 
+    FROM IGG_XX_OTL_BATCH_HEADER 
+    WHERE WEEK_NUMBER =l_WEEK_NUMBER
+    and EMP_ID=c1.EMP_ID;
+    DBMS_OUTPUT.put_line('l_batchCount-->'||l_batchCount); 
+    exception
+    when others then
+    l_batchCount:=null;    
+    end;
+    if(l_batchCount=0) then    
+        DBMS_OUTPUT.put_line('INSERT-->');
+        DBMS_OUTPUT.put_line('EMP_ID=-->'||c1.EMP_ID);
+        DBMS_OUTPUT.put_line('eMP nUMBER=-->'||l_BATCH_REQ_NO||c1.EMP_NUMBER);
+        Insert into IGG_XX_OTL_BATCH_HEADER(
+        BATCH_HDR_ID,BATCH_REQ_NO,
+        BATCH_REQ_DATE,BATCH_STATUS,
+        EMP_ID,EMP_NUMBER,EMP_NAME,
+        JOB_TITLE,DEPARTMENT,GRADE,
+        GRADE_CODE,LINE_MANAGER,ORG_ID,
+        ORG_NAME,EMAIL_ADDRESS,WEEK_NUMBER,
+        YEAR_WEEK,
+        CREATED_BY,CREATED_DATE,
+        LAST_UPDATED_BY,LAST_UPDATE_DATE,
+        LAST_UPDATE_LOGIN,
+        MANAGER_ID, 
+        UNIT_HR_ID) 
+        values 
+        (
+        l_batchId,
+        l_BATCH_REQ_NO||c1.EMP_NUMBER,
+        pa_SYSDATE,
+        l_BATCH_STATUS,
+        c1.EMP_ID,
+        c1.EMP_NUMBER,
+        c1.EMP_NAME,
+        c1.JOB_TITLE,
+        c1.DEPARTMENT,
+        c1.GRADE,
+        c1.GRADE_CODE,
+        c1.LINE_MANAGER,
+        c1.ORG_ID,
+        c1.ORG_NAME,
+        c1.EMAIL_ADDRESS,
+        l_WEEK_NUMBER,
+        l_YEAR_WEEK,
+        'AUTO',
+        pa_SYSDATE,
+        'AUTO',
+        pa_SYSDATE,
+        'AUTO',
+        l_manager_id,
+        l_unithr_id
+        );
+        ---DBMS_OUTPUT.PUT_LINE('--batch inserted'||c1.EMP_ID);
+        --approval
+        --Unit HR
+        insert into IGG_XX_APPROVAL_HISTORY
+        (
+        ACTION_HISTORY_ID,
+        HEADER_ID,
+        APPROVE_LEVEL,
+        APPROVER_ID,
+        APPROVER_USER_NAME,
+        APPROVER_FLAG,
+        CREATED_BY,
+        CREATION_DATE,
+        LAST_UPDATED_BY,
+        LAST_UPDATE_DATE,
+        LAST_UPDATE_LOGIN,
+        BATCH_NUMBER,
+        APPR_TYPE,
+        ACTIVE,
+        BATCH_STATUS
+        )
+        values(
+        ACTION_HISTORY_ID_S.nextval,
+        l_batchId,
+        1,
+        l_unithr_id,
+        l_HR_name,
+        'H',
+        'AUTO',
+        pa_SYSDATE,
+        'AUTO',
+        pa_SYSDATE,
+        'AUTO',
+        l_BATCH_REQ_NO||c1.EMP_NUMBER,
+        'Unit HR',
+        'A',
+        'DRAFT'
+        );
+    	---DBMS_OUTPUT.PUT_LINE('--LM--Record Inserted'||c1.EMP_ID);
+        commit;
+        begin
+            update IGG_XX_EMPLOYEE_DAILY_ATTENDANCE
+            set 
+            ATTENDANCE_STATUS=l_BATCH_STATUS,
+            BATCH_HDR_ID=l_batchId,
+            WEEKLY_UPDATE_FLAG='C'
+            where 
+            WEEKLY_UPDATE_FLAG is null
+            and WEEK_NUMBER=l_WEEK_NUMBER
+            and EMP_ID=c1.EMP_ID
+            and EMP_NUM=c1.EMP_NUMBER
+            and TO_DATE(ATTENDANCE_DATE, 'DD-MON-YYYY')
+            BETWEEN TO_DATE(P_FROM_TIME, 'DD-MON-YYYY') AND TO_DATE(P_TO_TIME, 'DD-MON-YYYY');
+            commit;
+        exception 
+        when others then
+        null;
+        end;
+       ----------------
+           l_normalExcep:= IGG_XX_NOR_EXCEP(l_batchId);
+            if(l_normalExcep='N')then
+                update IGG_XX_OTL_BATCH_HEADER
+                set ATTRIBUTE4='Regular'
+                where BATCH_HDR_ID=l_batchId;
+            else
+                update IGG_XX_OTL_BATCH_HEADER
+                set ATTRIBUTE4='Exception'
+                where BATCH_HDR_ID=l_batchId;
+            end if;
+    l_count:=l_count+1;
+    end if;
+end loop;
+-- chekc 4th week
+
+END;
