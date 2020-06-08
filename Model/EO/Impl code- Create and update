@@ -59,3 +59,28 @@
         //Delete Department itself after deleting all Employees associated with it
         super.remove();
     }
+
+
+     public void lock() {
+            try {
+                super.lock();
+            } catch (RowInconsistentException e) {
+                refresh(REFRESH_WITH_DB_ONLY_IF_UNCHANGED | REFRESH_CONTAINEES);
+                super.lock();
+            }
+     }
+     
+         protected void doDML(int operation, TransactionEvent e) {
+        if(operation==EntityImpl.DML_UPDATE){
+            this.setLastUpdatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+            this.setLastUpdateLogin(ADFContext.getCurrent().getSessionScope().get("userName").toString());
+            this.setLastUpdateDate(new oracle.jbo.domain.Timestamp(System.currentTimeMillis()));
+        }
+        if(operation==EntityImpl.DML_INSERT){
+            String bookingId = this.getBookingHdrId().toString();
+            String bookingNo = "BK - "+bookingId; 
+            this.setBookingNumber(bookingNo);
+        }
+        super.doDML(operation, e);
+    }
+     
