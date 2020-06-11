@@ -1,0 +1,6 @@
+=VLOOKUP(D264,'[anwa.xls]Export Worksheet'!$B$2:$C$280,2,0)
+
+D264---------------------------------------------- Unique column Name
+'[anwa.xls]Export Worksheet'!$B$2:$C$280---------- column and value (group)
+2------------------------------------------------- value
+0------------------------------------------------- false
