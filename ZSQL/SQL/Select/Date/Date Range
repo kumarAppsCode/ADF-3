@@ -1,0 +1,3 @@
+select to_date(:start_date,'dd-mon-yyyy') + rownum -1
+from all_objects
+where rownum <= to_date(:end_date,'dd-mon-yyyy')-to_date(:start_date,'dd-mon-yyyy')+1
