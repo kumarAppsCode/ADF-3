@@ -1,0 +1,49 @@
+create or replace PACKAGE XXTEST_PKG AS 
+
+  function XXPL_BOOKING_REPORT(P_BK_NO NUMBER ) 
+  RETURN CLOB ;
+
+END XXTEST_PKG;
+/
+
+create or replace PACKAGE BODY XXTEST_PKG AS
+
+  function XXPL_BOOKING_REPORT( P_BK_NO NUMBER ) 
+  RETURN CLOB 
+  IS 
+    l_query_ref SYS_REFCURSOR; 
+    l_handle    dbms_xmlgen.ctxhandle; 
+    l_data_xml  CLOB; 
+  BEGIN 
+      dbms_output.Put_line(P_BK_NO); 
+      OPEN l_query_ref FOR 
+SELECT
+    booking_hdr_id,
+    org_id,
+    func_id,
+    property_id,
+    building,
+    offer_hdr_id,
+    block_id,
+    booking_number,
+    booking_date,
+    booking_lease_start_date,
+    booking_lease_end_date
+FROM
+    xxpl_booking_header
+  WHERE BOOKING_HDR_ID=P_BK_NO
+  ORDER BY 1;
+      l_handle := dbms_xmlgen.Newcontext (l_query_ref); 
+      dbms_xmlgen.Setrowsettag (l_handle, 'PC'); 
+      dbms_xmlgen.Setrowtag (l_handle, 'PC_HEAD'); 
+      dbms_xmlgen.Setnullhandling (l_handle, dbms_xmlgen.empty_tag); 
+      l_data_xml := dbms_xmlgen.Getxml (l_handle); 
+      RETURN ( l_data_xml ); 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN ( NULL ); 
+  end XXPL_BOOKING_REPORT; 
+
+  
+
+END XXTEST_PKG;
