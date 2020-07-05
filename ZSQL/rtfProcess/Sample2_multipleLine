@@ -1,0 +1,147 @@
+create or replace PACKAGE XXLEASE_REPORT_PKG AS 
+
+  function XXPL_LEASE_FORM_REPORT( P_BK_NO NUMBER ) 
+  RETURN CLOB ;
+END XXLEASE_REPORT_PKG;
+
+/
+
+create or replace PACKAGE BODY XXLEASE_REPORT_PKG AS
+
+  function XXPL_LEASE_FORM_REPORT( P_BK_NO NUMBER ) 
+  RETURN CLOB 
+  IS 
+    l_query_ref SYS_REFCURSOR; 
+    l_handle    dbms_xmlgen.ctxhandle; 
+    l_data_xml  CLOB; 
+  BEGIN 
+      dbms_output.Put_line(P_BK_NO); 
+      OPEN l_query_ref FOR 
+select 
+  xbh.BOOKING_NUMBER,
+  xbh.BOOKING_DATE,
+  xbh.BOOKING_LEASE_START_DATE,
+  xbh.BOOKING_LEASE_END_DATE,
+  xbh.CREATED_BY,
+  xbh.STATUS,
+  xbd.BOOKING_AMOUNT,
+  xbd.BOOKING_HDR_ID,
+  xc.CUSTOMER_NUMBER,
+  xc.CUSTOMER_NAME,
+  xcs.SITE_NUMBER,
+  xcs.SITE_NAME,
+  xcc.CONTACT_NAME,
+  xcc.MOBILE_NUMBER,
+  xcc.PHONE_NUMBER,
+  xcc.FAX_NUMBER,
+  xcc.EMAIL_ID,
+  (SELECT Count(*) 
+    FROM   xxpl_booking_milestones 
+    WHERE  booking_hdr_id = XBH.booking_hdr_id 
+  ) NO_OF_PAYMENT,
+   To_char(systimestamp, 'DD-Mon-YY HH24:MI:SS') sysdate_with_timestamp, 
+  cursor
+(
+select 
+         xpm.PROPERTY_NAME
+        ,xpb.BUILD_NAME
+        ,xpu.UNIT_NAME
+        ,xpu.UNIT_TYPE
+        ,xbd.AREA_IN_SQFT
+        ,xbd.DISCOUNT_TYPE
+        ,xbd.DISC_AMOUNT
+        ,xbd.BASE_PRICE
+        ,xbd.TAX_CODE
+        ,xbd.TAX_RATE
+        ,xbd.TAX_AMOUNT
+        ,xbd.TOTAL_AMOUNT
+   from xxpl_property_master xpm
+       ,xxpl_property_buildings xpb
+       ,xxpl_property_units xpu
+       --,xxpl_booking_detail xbd
+   where 1=1
+   and xbd.PROPERTY_ID = xpm.PROPERTY_ID
+   and xbd.PROPERTY_ID = xpb.PROPERTY_ID
+   and xbd.BUILDING_ID = xpb.BUILD_ID
+   and xbd.PROPERTY_ID = xpu.PROPERTY_ID
+   and xbd.unit_id     = xpu.unit_id
+  -- and xbd.BOOKING_HDR_ID=36
+  )line,
+ cursor 
+ (SELECT INSTALLMENT_TYPE
+      ,SEQ_NUMBER
+      ,INSTALLMENT_AMOUNT MS_AMNT
+      ,NO_OF_DAYS
+      ,DUE_DATE
+      ,START_DATE
+      ,(START_DATE ||' to '|| DUE_DATE) type
+    FROM xxpl_booking_milestones 
+    where 1=1
+    and xbh.booking_hdr_id=booking_hdr_id
+    and MILESTONE_TYPE='MS' 
+    order by SEQ_NUMBER) MS,
+    cursor 
+ (SELECT INSTALLMENT_TYPE
+      ,SEQ_NUMBER
+      ,INSTALLMENT_AMOUNT OC_AMNT
+      ,NO_OF_DAYS
+      ,DUE_DATE
+      ,START_DATE
+      ,(START_DATE ||' to '|| DUE_DATE) type
+    FROM xxpl_booking_milestones 
+    where 1=1
+    and xbh.booking_hdr_id=booking_hdr_id
+    and MILESTONE_TYPE='OC' 
+    order by SEQ_NUMBER) OC,
+        cursor 
+ (SELECT INSTALLMENT_TYPE
+      ,SEQ_NUMBER
+      ,INSTALLMENT_AMOUNT CP_AMNT
+      ,NO_OF_DAYS
+      ,DUE_DATE
+      ,START_DATE
+      ,(START_DATE ||' to '|| DUE_DATE) type
+    FROM xxpl_booking_milestones 
+    where 1=1
+    and xbh.booking_hdr_id=booking_hdr_id
+    and MILESTONE_TYPE='CP' 
+    order by SEQ_NUMBER) CP,
+    cursor
+   ( select ALLOT_TYPE 
+           ,VALUE
+        from xxpl_property_carparks
+        where xbd.unit_id=unit_id
+        and ALLOT_TYPE   ='PAID'
+   )cp_paid
+
+  from 
+       xxpl_booking_header xbh
+      ,xxpl_booking_detail xbd
+      ,xxpl_booking_customer xbc
+      ,xxstg_customer xc
+      ,xxstg_cust_sites xcs
+      ,xxstg_cust_contacts xcc
+
+  where 1=1
+  and xbh.BOOKING_HDR_ID=xbc.BOOKING_HDR_ID
+  and xbh.BOOKING_HDR_ID=xbd.BOOKING_HDR_ID
+  and xbc.CUST_ID       =xc.CUST_ID 
+  and xbc.CUST_ID       =xcs.CUST_ID
+  and xbh.ORG_ID        =xcs.ORG_ID
+  and xbc.PRIMARY_YN    ='Y'
+  and xcs.PRIMARY_YN    ='Y'
+  and xcs.CUST_ID       =xcc.CUST_ID(+)
+  and xcs.CUST_SITE_ID  =xcc.CUST_SITE_ID(+)
+  and xbh.BOOKING_HDR_ID=P_BK_NO
+  ORDER BY 1;
+      l_handle := dbms_xmlgen.Newcontext (l_query_ref); 
+      dbms_xmlgen.Setrowsettag (l_handle, 'PC'); 
+      dbms_xmlgen.Setrowtag (l_handle, 'PC_HEAD'); 
+      dbms_xmlgen.Setnullhandling (l_handle, dbms_xmlgen.empty_tag); 
+      l_data_xml := dbms_xmlgen.Getxml (l_handle); 
+      RETURN ( l_data_xml ); 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN ( NULL ); 
+  end XXPL_LEASE_FORM_REPORT; 
+  END XXLEASE_REPORT_PKG;
