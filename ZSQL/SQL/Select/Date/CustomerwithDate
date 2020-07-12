@@ -1,0 +1,66 @@
+SELECT
+   HCA.CUST_ACCOUNT_ID CUST_ID,
+  HCA.ACCOUNT_NUMBER CUSTOMER_NUMBER,
+  HP.PARTY_NAME CUSTOMER_NAME,
+  null CUSTOMER_NAME_TL,
+  RS.RESOURCE_SALESREP_ID SALES_PERSON_ID,
+  null LEAD_ID,
+   HP.PARTY_ID ORIG_SYSTEM_REF,
+   HCA.STATUS ACTIVE_YN,
+   HCA.LAST_UPDATE_DATE,
+  HCA.LAST_UPDATED_BY,
+  HCA.CREATION_DATE,
+  HCA.CREATED_BY,
+  HCA.LAST_UPDATE_LOGIN,
+  HP.PERSON_TITLE TITLE,
+  HP.PERSON_LAST_NAME SUR_NAME,
+  HP.PERSON_MIDDLE_NAME MIDDLE_NAME,
+  HP.PERSON_FIRST_NAME FIRST_NAME,
+  HCA.ATTRIBUTE17 PASSPORT_NO
+  
+  /* HP.PARTY_TYPE CUSTOMER_TYPE,
+  --  hp.orig_system_reference orig_system_ref,
+  --  TO_CHAR(hca.last_update_date,'DD-MON-YYYY HH24:MM:SS','NLS_DATE_LANGUAGE = AMERICAN') tests,
+  --  TO_DATE (TO_CHAR(hca.last_update_date ,'MM-dd-yyyy HH24'), 'MM-dd-yyyy HH24') last_update_date,
+  HCA.ATTRIBUTE13 TENANTARABICNAME,
+  HCA.ATTRIBUTE14 NATIONALITY1,
+  HCA.ATTRIBUTE15 NATIONALITY1_ARABIC,
+  HCA.ATTRIBUTE16 EMIRATE_ID,
+  
+  HCA.ATTRIBUTE18 VISA1VALIDITY,
+  HCA.ATTRIBUTE19 TRD1LICENSENO,
+  HCA.ATTRIBUTE20 TRD1LICENSEEXPDATE,
+  HCA.ATTRIBUTE21 TRD1LICENSE_ISSUED_FR,
+  HCA.ATTRIBUTE22 VISA1_STATUS,
+  HCA.ATTRIBUTE23 RESIDENTIAL_STATUS,
+  HCA.ATTRIBUTE24 PURPOSE1_OF_RENT,
+  HCA.ATTRIBUTE25 PROFESSION, */
+  
+  -- HCA.ACCOUNT_ESTABLISHED_DATE
+  /*   CASE
+  WHEN hp.party_type = 'ORGANIZATION'
+  THEN hop.attribute_number1
+  ELSE hpp.attribute_number1
+  END lead_id */
+FROM hz_cust_accounts hca,
+  hz_parties hp,
+  ra_salesreps rs,
+  --hz_organization_profiles hop,
+  hz_person_profiles hpp
+WHERE 1          = 1
+AND hca.party_id = hp.party_id
+AND hp.party_id  = rs.party_id(+)
+  --AND HP.PARTY_ID            = HOP.PARTY_ID(+)
+AND hpp.party_id(+) = hp.party_id
+  --AND sysdate               <= hca.account_termination_date
+AND hca.account_termination_date = to_date('31124712','DDMMYYYY')
+AND (hca.LAST_UPDATE_DATE        >= TO_DATE (:p_last_update_date ,'MM-dd-yyyy HH24:MI:SS')
+OR HP.LAST_UPDATE_DATE           >= TO_DATE (:p_last_update_date ,'MM-dd-yyyy HH24:MI:SS')
+OR rs.LAST_UPDATE_DATE           >= TO_DATE (:p_last_update_date ,'MM-dd-yyyy HH24:MI:SS')
+  ---OR hop.LAST_UPDATE_DATE   >= TO_DATE (:p_last_update_date ,'MM-dd-yyyy HH24:MI:SS')
+OR hpp.LAST_UPDATE_DATE >= TO_DATE (:p_last_update_date ,'MM-dd-yyyy HH24:MI:SS'))
+ORDER BY hp.party_name
+
+
+
+p_last_update_date
