@@ -1,0 +1,9 @@
+create database link "XXPROD"
+connect to APPS
+identified by "APPS1234"
+using '000.23.3.6:1521/ORATEST';
+
+
+SELECT * FROM xxsc_pay_lines
+MINUS
+SELECT * FROM xxsc_pay_lines@xxprod.aaa.bbb.eee.COM;
