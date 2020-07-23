@@ -1,0 +1,83 @@
+CREATE OR REPLACE PROCEDURE xxpl_generate_oa_invoice (
+    p_oa_header_id   NUMBER,
+    p_login_user     IN    VARCHAR2,
+    p_msg            OUT   VARCHAR2,
+    p_msg_code       OUT   VARCHAR2
+) AS
+
+    CURSOR oa_contract (
+        l_oa_cont_id NUMBER
+    ) IS
+    SELECT
+        oa_contract_id,
+        oa_contract_number,
+        org_id,
+        invoice_frequency,
+        oa_contract_start_date,
+        oa_contract_end_date,
+        property_id,
+        build_id,
+        unit_id
+    FROM
+        xxpl_oa_contract_hdr
+    WHERE
+        oa_contract_id = l_oa_cont_id;
+
+--declare
+
+    l_pay_type     VARCHAR2(120);
+    l_add_months   NUMBER;
+    l_st_date      DATE;
+    l_end_date     DATE;
+    l_tot_mont     NUMBER;
+    l_loop         NUMBER;
+    l_cnt          NUMBER;
+    l_noOfDays number;
+BEGIN
+--
+    FOR c1 IN oa_contract(p_oa_header_id) LOOP
+        l_pay_type := c1.invoice_frequency;
+        dbms_output.put_line('l_pay_type==>' || l_pay_type);
+-- monthly
+        IF l_pay_type = 'MONTHLY' THEN
+            l_add_months := 1;
+        ELSIF l_pay_type = 'QUARTERLY' THEN
+            l_add_months := 3;
+        ELSIF l_pay_type = 'HALF-YEARLY' THEN
+            l_add_months := 6;
+        ELSIF l_pay_type = 'YEARLY' THEN
+            l_add_months := 12;
+        ELSE
+            l_add_months := 1;
+        END IF;
+        dbms_output.put_line('l_add_months==>' || l_add_months);
+--Date Process
+        l_st_date := c1.oa_contract_start_date;
+        l_end_date := NULL;
+        SELECT
+            months_between(c1.oa_contract_end_date, c1.oa_contract_start_date)
+        INTO l_tot_mont
+        FROM
+            dual;
+
+        dbms_output.put_line('l_tot_mont==>' || round(l_tot_mont, 2));
+        dbms_output.put_line('l_tot_mont 0==>' || round(l_tot_mont, 0));
+        l_loop := round(round(l_tot_mont, 2) / l_add_months, 0);
+        dbms_output.put_line('l_loop of while==>' || l_loop);
+        l_cnt := 1;
+        WHILE l_cnt <= l_loop LOOP
+            l_cnt := l_cnt + 1;
+            SELECT
+                add_months(l_st_date, l_add_months) - 1
+            INTO l_end_date
+            FROM dual;
+         l_noOfDays:=l_end_date-l_st_date;
+         dbms_output.put_line('l_noOfDays==>' || l_noOfDays);    
+    --
+         dbms_output.put_line('Sdate==>' || l_st_date||'=='||l_end_date);    
+            l_st_date := l_end_date + 1;
+            EXIT WHEN l_end_date >= c1.oa_contract_end_date;
+        END LOOP;
+
+    END LOOP;
+END xxpl_generate_oa_invoice;
