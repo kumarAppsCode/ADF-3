@@ -5,4 +5,15 @@ and to_date('07-MAR-2020', 'DD-MON-YYYY')
 between 
 TO_CHAR(TO_DATE(START_DATE, 'DD-MM-YYYY'), 'DD-MON-YYYY')
 AND 
-TO_CHAR(TO_DATE(END_DATE, 'DD-MM-YYYY'), 'DD-MON-YYYY') 
+TO_CHAR(TO_DATE(END_DATE, 'DD-MM-YYYY'), 'DD-MON-YYYY') ;
+
+*************************************************************************
+SELECT
+COUNT(*)
+FROM
+igg_xx_stg_absence_saas
+WHERE
+person_id = 300000001886199
+AND to_char(to_date('07-MAR-2020', 'DD-MON-YYYY'), 'DD-MM-YYYY') 
+BETWEEN start_date AND end_date;
+*************************************************************************
