@@ -1,0 +1,9 @@
+      merge into dummy_emp r
+  using employee e
+  on (r.emp_id = e.employee_id)
+  when matched then
+  update set
+     r.first_name = e.first_name
+  when not matched then
+     insert values(e.employee_id, e.first_name, e.last_name, e.dept_no, e.salary);
+  commit;
