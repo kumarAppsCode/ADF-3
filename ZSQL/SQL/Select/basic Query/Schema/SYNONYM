@@ -1,0 +1,2 @@
+CREATE SYNONYM xxfnd_functions
+FOR XXPRISM.xxfnd_functions;
