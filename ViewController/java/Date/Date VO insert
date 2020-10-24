@@ -1,0 +1,55 @@
+    public void onChangeStdEndDate(ValueChangeEvent valueChangeEvent) throws ParseException {
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        System.out.println("OLD==>"+valueChangeEvent.getOldValue());
+        System.out.println("NEW==>"+valueChangeEvent.getNewValue());
+        if(valueChangeEvent.getNewValue()!=null){
+            System.out.println("NEW 1==>"+valueChangeEvent.getNewValue());
+            OALineStdVO.getCurrentRow().setAttribute("OaContDtlActive", "N");
+            String edate =valueChangeEvent.getNewValue()==null?"0":valueChangeEvent.getNewValue().toString();
+            Date nextStartDate = new Date();
+            if(!"0".equals(edate)){
+                try {
+                    nextStartDate = new SimpleDateFormat("dd-MMM-yyyy").parse(edate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } 
+            }
+            Calendar cl = Calendar.getInstance();
+            cl.setTime(nextStartDate);
+            cl.add(Calendar.DATE, 1);
+            Date pdcPlus170 = cl.getTime();
+            System.err.println("pdcPlus170==>"+pdcPlus170);
+            Object sdate=new SimpleDateFormat("yyyy-MM-dd").format(pdcPlus170);
+            System.out.println("sdate==>"+sdate);
+            AdfFacesContext.getCurrentInstance().getPageFlowScope().put("StartDate", sdate);
+
+            AdfFacesContext.getCurrentInstance().getPageFlowScope().put("Navigation", "EDATE");
+            AdfFacesContext.getCurrentInstance().getPageFlowScope().put("oaMethod", "OACS");
+            String p_OrgId=OAVO.getCurrentRow().getAttribute("OrgId")==null?"0":OAVO.getCurrentRow().getAttribute("OrgId").toString();
+            String p_PropertyId=OAVO.getCurrentRow().getAttribute("PropertyId")==null?"0":OAVO.getCurrentRow().getAttribute("PropertyId").toString();
+            String p_BuildId=OAVO.getCurrentRow().getAttribute("BuildId")==null?"0":OAVO.getCurrentRow().getAttribute("BuildId").toString();
+            String unitMethod=OAVO.getCurrentRow().getAttribute("UnitMethod")==null?"0":OAVO.getCurrentRow().getAttribute("UnitMethod").toString();
+            filterAgreement(p_OrgId, p_PropertyId, p_BuildId, p_aggrementType, p_aggrementMethod);
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            this.getP5().show(hints);
+           
+        }else{
+            
+        }
+    }
+    
+    ================================================
+          Object sDate=null;
+        if(getDate.equals("START")){
+            sDate=new java.sql.Date(System.currentTimeMillis());
+        }else{
+            sDate=getDate;
+        }
+================================================
+        r.setAttribute("OaContDtlStartDate", sDate);
+        
+        
+        
+    
+    
+    
