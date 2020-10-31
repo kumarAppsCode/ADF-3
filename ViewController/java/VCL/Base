@@ -1,0 +1,108 @@
+[1/11/19 3:30 PM] Sudha Yerrabathina @ 4i Apps
+    
+    public void onclickPriceListVc(ValueChangeEvent valueChangeEvent) {​
+      valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        System.err.println("--OLD--" + valueChangeEvent.getOldValue());
+        System.err.println("--New--" + valueChangeEvent.getNewValue());
+        if (valueChangeEvent.getNewValue() != null && valueChangeEvent.getNewValue() != "0") {​
+            String pricelist =
+                JSFUtils.resolveExpression("#{​row.bindings.PlId.attributeValue}​") == null ? null :
+                JSFUtils.resolveExpression("#{​row.bindings.PlId.attributeValue}​").toString();
+
+
+            String paymentplanId =
+                JSFUtils.resolveExpression("#{​row.bindings.MsHdrId.attributeValue}​") == null ? null :
+                JSFUtils.resolveExpression("#{​row.bindings.MsHdrId.attributeValue}​").toString();
+
+
+            Object priceListObj = getValueFrmExpression(pricelist);
+            System.err.println("priceList==>" + priceListObj + "paymentplanId==>" + paymentplanId);
+            int checkCount = checkPaymentplan(paymentplanId, pricelist);
+//            System.err.println("checkStatus-->" + checkStatus);
+            if (checkCount>=2) {​
+                JSFUtils.addFacesErrorMessage("Cannot Add Same Price List for  Same Payment Plan");
+                priceListId.setValue(null);
+//                ViewCriteria VC = paymentPlanVO.createViewCriteria();
+//                ViewCriteriaRow VCR = VC.createViewCriteriaRow();
+//                VCR.setAttribute("MsHdrId", null);
+//                VC.addRow(VCR);
+//                paymentPlanVO.applyViewCriteria(VC);
+//                paymentPlanVO.executeQuery();
+               AdfFacesContext.getCurrentInstance().addPartialTarget(priceListId);
+            }​
+            else{​
+//                    ViewCriteria VC = paymentPlanVO.createViewCriteria();
+//                    ViewCriteriaRow VCR = VC.createViewCriteriaRow();
+//                    VCR.setAttribute("MsHdrId", null);
+//                    VC.addRow(VCR);
+//                    paymentPlanVO.applyViewCriteria(VC);
+//                    paymentPlanVO.executeQuery();
+                
+                }​
+        }​
+
+
+
+    }​
+
+
+
+    public  int checkPaymentplan(String MsHdrId, String PlId) {​
+        String status = null;
+        int count=0;
+        paymentPlanVO.executeQuery();
+        System.err.println("---Count is----" + paymentPlanVO.getEstimatedRowCount());
+        if(paymentPlanVO.getEstimatedRowCount()!=1){​
+            RowSetIterator Rs=paymentPlanVO.createRowSetIterator(null);
+               while(Rs.hasNext()){​
+                  Row r = Rs.next();
+                  System.err.println("PID==>"+r.getAttribute("PlId")+"MS Id-->"+r.getAttribute("MsHdrId")); 
+                  String pricelist=r.getAttribute("PlId")==null?"pl":r.getAttribute("PlId").toString();
+                   String msid=r.getAttribute("MsHdrId")==null?"ms":r.getAttribute("MsHdrId").toString(); 
+                   if(MsHdrId.equals(msid)){​
+                       if(PlId.equals(pricelist)){​
+                           count++;
+//                           status="equal";
+//                           break;
+                       }​
+                   }​
+               }​   
+               
+        }​else{​
+//            status="notequal";
+        }​
+          
+        
+        
+//        ViewCriteria VC = paymentPlanVO.createViewCriteria();
+//        ViewCriteriaRow VCR = VC.createViewCriteriaRow();
+//        VCR.setAttribute("MsHdrId", MsHdrId);
+//        VC.addRow(VCR);
+//        VCR.setAttribute("PlId", PlId);
+//        VC.addRow(VCR);
+//        paymentPlanVO.applyViewCriteria(VC);
+//        paymentPlanVO.executeQuery();
+//        System.err.println("Fileter Count==>" + paymentPlanVO.getEstimatedRowCount());
+//        if (paymentPlanVO.getEstimatedRowCount() == 0) {​
+//            status = "Yes";
+//        }​ else {​
+//            status = "No";
+//        }​
+        return count;
+    }​
+ 
+
+
+
+
+
+
+        public void onChangeType(ValueChangeEvent valueChangeEvent) {​​​​​​​
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        String returnvalue=checkDuplicate(JSFUtils.resolveExpression("#{​​​​​​​row.bindings.ChargeTypeTrans.attributeValue}​​​​​​​").toString());
+       if(returnvalue.equals("Y")) {​​​​​​​
+        JSFUtils.addFacesInformationMessage("Selected Charge type is already exist");
+        type.setValue("");
+         AdfFacesContext.getCurrentInstance().addPartialTarget(type);
+    }​​​​​​​
+    }​​​​​​​
