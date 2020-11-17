@@ -1,0 +1,11 @@
+        String sDate = currRow.getAttribute("BookingLeaseStartDate")!=null?currRow.getAttribute("BookingLeaseStartDate").toString():"0";
+
+msg = PackageCalling.checkValidDates(getDateByFormat(sDate), getDateByFormat(eDate), msType); 
+
+
+    private String getDateByFormat(String repDate) throws ParseException {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = formatter.parse(repDate);
+            SimpleDateFormat ft = new SimpleDateFormat("dd-MMM-yyyy");
+            return ft.format(date).toUpperCase();
+     }
