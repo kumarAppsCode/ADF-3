@@ -1,0 +1,7 @@
+SELECT 
+round(BASEAMOUNT,2) as base,
+round(BASEAMOUNT,2)* 0.05 as tax,
+round(round(BASEAMOUNT,2)+round(BASEAMOUNT,2)* 0.05,2) as tat
+FROM xxpl_booking_milestones where booking_hdr_id=1141 and INVOICE_NUMBER=138014;
+
+Base + Tax
