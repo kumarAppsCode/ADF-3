@@ -1,0 +1,8 @@
+if(SourcesRefDtlId!=null){
+oracle.jbo.Key keyVal=new oracle.jbo.Key(SourcesRefDtlId);
+return ReceiptLineMs_ROVO1.findByKey(keyVal,1)[0].getAttribute("MocName");
+}
+else{
+return null;
+}
+===================================
