@@ -1,0 +1,25 @@
+to Start application:
+==>DB Required
+==>To run : mvn spring-boot:run
+==>In log:
+	1. project id
+	2. default profile setting 
+	3. spring application context-Container(category creating - path scan and store in context)
+	4. Tomcat Server
+	5. Servlet engine
+	6. Bean register
+==>Whitelabel Error Page---localhost:8080
+==>application.-prod.properties
+==>inside src-config folder;server.port:7075
+==>spring boot data jpa 
+==>DB connection
+==>IN CMD
+-------------------------------------------
+mvn install:install-file -Dfile=ojdbc7.jar  -DgroupId=com.oracle -DartifactId=ojdbc7 -Dversion=12.1.0.2 -Dpackaging=jar
+mvn install:install-file -Dfile=<your-jar-file-location> -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=<your-jar version> -Dpackaging=jar
+
+Jar right click and get the property
+
+mvn install:install-file -Dfile=C:\Users\DineshkumarP\Documents\NetBeansProjects\jar\ojdbc7.jar -DgroupId=com.oraclejar -DartifactId=ojdbc7 -Dversion=12.1.0.2 -Dpackaging=jar
+-------------------------------------------
+==> Data Sources
