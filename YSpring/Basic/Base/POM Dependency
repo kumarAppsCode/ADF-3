@@ -4,6 +4,7 @@
 		<!--springframework-annotation  -->
 		<!-- spring data jpa starter -->
 		<!-- mysql/oracle db -->
+		<!--Javax Persistence -->
 -----------------------------------------------------
     		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -48,3 +49,9 @@
 		<version>12.1.0.2</version>
 	</dependency>
 -----------------------------------------------------
+@annotation for @entity 
+		<!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+		</dependency>
