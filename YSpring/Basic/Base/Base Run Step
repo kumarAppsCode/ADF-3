@@ -23,3 +23,5 @@ Jar right click and get the property
 mvn install:install-file -Dfile=C:\Users\DineshkumarP\Documents\NetBeansProjects\jar\ojdbc7.jar -DgroupId=com.oraclejar -DartifactId=ojdbc7 -Dversion=12.1.0.2 -Dpackaging=jar
 -------------------------------------------
 ==> Data Sources
+
+https://docs.spring.io/spring-boot/docs/1.1.6.RELEASE/reference/html/common-application-properties.html
