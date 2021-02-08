@@ -1,1 +1,14 @@
 Spring:
+
+Entity level:
+@Entity
+@Table(name = "xxfnd_functions", schema = "XXPM_TEST")
+-------------------------------------------------------------------
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "function_id_seq")
+    @SequenceGenerator(name = "function_id_seq",sequenceName = "XXFND_FUNC_ID_S", allocationSize = 1)
+    @Column(name = "FUNC_ID")
+-------------------------------------------------------------------
+Constructor
+Default Constructor
+-------------------------------------------------------------------
