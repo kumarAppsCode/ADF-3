@@ -1,6 +1,23 @@
 
 
-
+***************************************************************************************************************************
+   @RequestMapping("getall")
+     public List<Function_EO> getFunctionByIdandName(
+                                          @RequestParam(value = "id", required = false) List<Integer> funId,
+                                          @RequestParam(value = "fname", required = false) String fname
+                                                       ){
+         return functionservices.getFunctionByIdListandName(funId, fname);
+     }
+===============================================
+    public List<Function_EO> getFunctionByIdListandName(List<Integer> funId, String fname) {
+        if(funId==null && fname==null){
+             List<Function_EO> al= new ArrayList<>();
+             functionrepo.findAll().forEach(al::add);
+             return al;
+        }else{
+            return functionrepo.findByFuncidInOrFuncnameContaining(funId, fname);
+        }
+	}
 ***************************************************************************************************************************
    // Get All Record
     @RequestMapping("/function")
