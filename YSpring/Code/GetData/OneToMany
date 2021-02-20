@@ -1,0 +1,8 @@
+In Entity: Header
+one to many 
+1. Header_EO.java: List of child
+2. List of child : 
+				@OneToMany(targetEntity = LookupValue_EO.class, cascade = CascadeType.ALL)
+				@JoinColumn(name = "LOOKUP_TYPE_ID",  nullable = false, insertable = false, updatable = false)
+				public Set<LookupValue_EO> lookupValue;
+	
