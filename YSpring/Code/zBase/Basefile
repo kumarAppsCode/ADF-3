@@ -1,1 +1,6 @@
 @JsonInclude(Include.NON_NULL) -- not show in screen
+====================================================================
+    @Column(name = "LastName")
+    @NotBlank(message = "Enter the author's last name")
+    public String lastName;
+====================================================================
