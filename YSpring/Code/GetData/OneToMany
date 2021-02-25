@@ -1,8 +1,23 @@
 In Entity: Header
-one to many 
+one to many===========Case 1
 1. Header_EO.java: List of child
-2. List of child : 
-				@OneToMany(targetEntity = LookupValue_EO.class, cascade = CascadeType.ALL)
-				@JoinColumn(name = "LOOKUP_TYPE_ID",  nullable = false, insertable = false, updatable = false)
-				public Set<LookupValue_EO> lookupValue;
-	
+	@OneToMany(targetEntity = LookupValue_EO.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "LOOKUP_TYPE_ID",  nullable = false)
+	// @JsonIgnore
+	private Set<LookupValue_EO> lookupValue;
+in child no parent_id
+***************************************************************************	
+one to many===========Case 2 
+1. Header.java
+	@OneToMany(targetEntity = LookupValue_EO.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "LOOKUP_TYPE_ID",  nullable = false)
+	// @JsonIgnore
+	private Set<LookupValue_EO> lookupValue;
+
+2.Child.java
+	@ManyToOne()
+        @JoinColumn(name = "LOOKUP_TYPE_ID", insertable = false, updatable = false)
+        @JsonIgnore
+        private LookupType_EO lookupType;
+	// Getter and setter
+***************************************************************************	
