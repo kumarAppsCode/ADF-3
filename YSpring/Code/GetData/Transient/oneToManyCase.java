@@ -14,3 +14,12 @@ In Child.java
         this.lookupTypeName = lookupTypeName;
     }
 ************************************************************************************
+Parent Table
+  @OneToOne(targetEntity = xxstg_organizationROVO.class,cascade =CascadeType.MERGE)
+    @JoinColumn(name = "ORG_ID")
+    // @JsonIgnore
+    private xxstg_organizationROVO org;
+
+    @Transient
+    private String OrgName;
+
