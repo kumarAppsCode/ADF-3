@@ -1,0 +1,39 @@
+::Relationship::
+person(one) -> address(one)
+
+
+::DB Schema::
+person( personId )
+address( personId )
+* address's primary key is same as person's primary key
+
+::Java Operation::
+person.getAddress();
+
+******************************************
+@Entity
+@Table(name="PERSON")
+public class Person {
+
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+@Column(name="personId")
+private int id;
+
+@OneToOne
+@PrimaryKeyJoinColumn
+private Address address;
+
+public Address getAddress() {
+return address;
+}
+}
+=================================================================
+@Entity
+@Table(name = "ADDRESS")
+public class Address {
+@Id
+@Column(name = "personId")
+private int id;
+}
+
