@@ -1,0 +1,40 @@
+::Relationship::
+person(one) <-> address(one)
+
+::DB Schema::
+person(id, addressId)
+address(id)
+
+::Java Operation::
+person.getAddress();
+address.getPerson();
+
+::Annotation::
+*******************************
+@Entity
+@Table(name="PERSON")
+public class Person {
+   
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name="personId")
+  private int id;
+ 
+  @ManyToOne
+  @JoinColumn(name="addressId")     // inverse = false
+  private Address address;
+}
+=============================
+@Entity
+@Table(name = "ADDRESS")
+public class Address {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "addressId")
+  private int id;
+
+  @OneToOne(mappedBy="address")  // inverse=true, pointnig Person's address field
+  private Person person;   
+}
+**********************************
