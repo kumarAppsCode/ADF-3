@@ -1,0 +1,34 @@
+::Relationship::
+person(one) -> address(many)
+
+::DB Schema::
+person( personId )
+address( addressId, personId )
+
+::Java Operation::
+person.getAddresses();
+************************************************
+@Entity
+@Table(name="PERSON")
+public class Person {
+
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+@Column(name="personId")
+private int id;
+
+@OneToMany
+@JoinColumn(name="personId") 
+private Set <Address> addresses;
+}
+===============================
+@Entity
+@Table(name = "ADDRESS")
+public class Address {
+
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+@Column(name = "addressId")
+private int id;
+}
+***********************************
