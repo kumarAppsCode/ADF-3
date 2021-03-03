@@ -1,0 +1,44 @@
+::Relationship::
+person(many) -> address(one)
+
+ex) person A and person B live in address AA
+
+::DB Schema::
+person (personId)
+addres (addressId)
+personAddress (personId, addressId)
+
+::Java Operation::
+person.getAddress();
+=================================
+@Entity
+@Table(name = "PERSON")
+public class Person {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "personId")
+  private int id;
+
+  @ManyToOne(optional=true)
+  @JoinTable(name="PersonAddress",
+    joinColumns = {
+      @JoinColumn(name="personId", unique = true)           
+    },
+    inverseJoinColumns = {
+      @JoinColumn(name="addressId")
+    }     
+  )
+  private Address address;
+}
+***********************************
+@Entity
+@Table(name = "ADDRESS")
+public class Address {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "addressId")
+  private int id;
+}
+***************************************************************
+
