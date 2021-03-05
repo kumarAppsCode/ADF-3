@@ -1,0 +1,40 @@
+<div class="oj-flex">
+  <oj-table scroll-policy="loadMoreOnScroll" 
+  class="oj-flex-item oj-sm-12 oj-md-12"
+   data="[[ $variables.empADP ]]" 
+   columns='[{"headerText":"firstName","field":"firstName","template":"firstName"},{"headerText":"lastName","field":"lastName","template":"lastName"},{"headerText":"age","field":"age","template":"age"}]' 
+   edit-mode="rowEdit" 
+   on-oj-before-row-edit="[[$listeners.ojTableOjBeforeRowEdit]]" 
+   on-oj-before-row-edit-end="[[$listeners.ojTableOjBeforeRowEditEnd]]">
+    <template slot="firstName">
+      <oj-bind-if test='[[$current.mode=="navigation"]]'>
+      <oj-bind-text value="[[$current.data]]"></oj-bind-text> 
+      </oj-bind-if> 
+    <oj-bind-if test='[[$current.mode=="edit"]]'>
+      <oj-input-text value="{{ $variables.empRow.firstName }}" ></oj-input-text>
+    </oj-bind-if>
+    </template>
+    <template slot="lastName">
+  <oj-bind-if test='[[$current.mode=="navigation"]]'>
+      <oj-bind-text value="[[$current.data]]"></oj-bind-text> 
+      </oj-bind-if> 
+    <oj-bind-if test='[[$current.mode=="edit"]]'>
+      <oj-input-text value="{{ $variables.empRow.lastName }}" ></oj-input-text>
+    </oj-bind-if>
+    </template>
+    <template slot="age">
+        <oj-bind-if test='[[$current.mode=="navigation"]]'>
+      <oj-bind-text value="[[$current.data]]"></oj-bind-text> 
+      </oj-bind-if> 
+    <oj-bind-if test='[[$current.mode=="edit"]]'>
+      <oj-input-number value="{{ $variables.empRow.age }}"  style="text-align: right;"></oj-input-number>
+    </oj-bind-if>
+    </template>
+  </oj-table>
+</div>
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-12 oj-md-1"></div>
+  <div class="oj-flex-item oj-sm-12 oj-md-2">
+    <oj-button on-oj-action="[[$listeners.ojButtonOjAction]]">Save</oj-button>
+  </div>
+</div>
