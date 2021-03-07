@@ -18,6 +18,15 @@ public class CustomWebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         
+        
+        //sort
+        SortHandlerMethodArgumentResolver sortResolver = new SortHandlerMethodArgumentResolver();
+        sortResolver.setSortParameter("order-by");
+        //aasing to constructor
+        PageableHandlerMethodArgumentResolver pageResolver = new PageableHandlerMethodArgumentResolver(sortResolver);
+        
+        
+        
         PageableHandlerMethodArgumentResolver pageResolver=new PageableHandlerMethodArgumentResolver();
         
         //parameter for page
