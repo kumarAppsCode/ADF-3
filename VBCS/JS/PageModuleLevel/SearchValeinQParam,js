@@ -1,0 +1,8 @@
+  PageModule.prototype.searchIn=function(name){
+    var sorrounded='\''+name.split(',').join('\',\'')+'\'';
+    console.log("sorrounded"+sorrounded);
+    var query=' firstName in (' +sorrounded+')';
+    var ret={"q":query};
+    return ret;
+  };
+
