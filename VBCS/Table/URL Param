@@ -1,0 +1,7 @@
+URL Param
+
+{
+ "pattern": "{{ $page.variables.pattern }}",
+ "a": "{{ $page.variables.artis }}"
+}
+
