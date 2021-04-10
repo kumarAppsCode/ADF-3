@@ -1,0 +1,4 @@
+if Bind:
+[[ $variables.trainVar==null||$variables.trainVar==0 ]]
+[[ $variables.trainVar==1 ]]
+[[ $variables.trainVar==2 ]]
