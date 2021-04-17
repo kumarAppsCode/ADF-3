@@ -1,0 +1,41 @@
+controller:
+
+@RequestMapping(value = "addVal")
+    public Map<String, Object> getSumofValue(
+        @RequestParam(value = "n1") Integer number1,
+        @RequestParam(value = "n2") Integer number2){
+
+    Map<String, Object> result=propertyMater_so.getSumOfValue(number1, number2);   
+            
+    return result;
+    }
+**********
+    public Map<String, Object> getSumOfValue(Integer number1, Integer number2) {
+        
+        Map<String, Object> response=new HashMap<String, Object>();
+        SimpleJdbcCall process=DBAUtils.callFunction("adder", jdbcTemplate);
+        process.declareParameters(
+        new SqlParameter("n1", Types.INTEGER),
+        new SqlParameter("n2", Types.INTEGER)
+        ).compile();
+        SqlParameterSource param=new MapSqlParameterSource()
+        .addValue("n1",number1)
+        .addValue("n2", number2);
+        
+        BigDecimal i=process.executeFunction(BigDecimal.class, param);
+        response.put("key", i); 
+        return  response;
+    }
+****************
+    /**
+     * This method is used to get instance of simplejdbccall by passing below parameters
+     * @param procedure
+     * @param jdbcTemplate
+     * @return
+     */
+    public static SimpleJdbcCall callFunction(String functionName, JdbcTemplate jdbcTemplate){
+        SimpleJdbcCall  executor = new SimpleJdbcCall(jdbcTemplate)
+            .withFunctionName(functionName);
+        return executor;
+    }
+================================================================================================================    
