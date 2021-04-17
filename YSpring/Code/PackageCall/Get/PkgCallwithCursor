@@ -1,0 +1,63 @@
+Controller
+************************************************************************************
+@RequestMapping(value = "property")
+    public Map<String, Object> getPropertyList(
+        @RequestParam (value = "p_propertyid", required = false) String p_propertyid){
+        
+    Map<String, Object> propertyResult=propertyMater_so.getPropertyMaster(p_propertyid);
+        
+    return propertyResult;
+    }
+======================
+Services
+import java.sql.Types;
+import java.util.Map;
+
+import com.sample.contract.Utils.DBAUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.stereotype.Service;
+
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+
+    public Map<String, Object> getPropertyMaster(String p_propertyid) {
+        
+     SimpleJdbcCall procedure=DBAUtils.callStoredProcedure("GET_PROPERTY", jdbcTemplate);   
+     procedure.declareParameters(
+      new SqlParameter("P_PROPERTY_ID",  Types.NUMERIC),
+      new SqlOutParameter("P_STATUS",    Types.VARCHAR),
+      new SqlOutParameter("P_RECORDSET", Types.REF_CURSOR)
+     ).compile();
+     SqlParameterSource param=new MapSqlParameterSource()
+     .addValue("P_PROPERTY_ID", p_propertyid);
+    //  .addValue("P_PROPERTY_ID", p_propertyid) --if multiple
+        return procedure.execute(param);
+    }
+==========================
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+
+
+/**
+     * This method is used to get instance of simplejdbccall by passing below parameters
+     * @param procedure
+     * @param jdbcTemplate
+     * @return
+     */
+    public static SimpleJdbcCall callStoredProcedure(String procedure, JdbcTemplate jdbcTemplate){
+        SimpleJdbcCall  executor = new SimpleJdbcCall(jdbcTemplate)
+            .withProcedureName(procedure);
+        return executor;
+    }
+
+    
+************************************************************************************
