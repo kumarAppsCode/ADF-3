@@ -1,0 +1,7 @@
+    public void callCancelOrderProcess(String invoiceNum) {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(this.jdbcTemplate).withProcedureName("XXASF_VANSALES_D_INV_UPDATE");
+        Map<String, Object> inParamMap = new HashMap();
+        inParamMap.put("P_INVOICE_NUM", invoiceNum);
+        SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+        simpleJdbcCall.execute(in);
+    }
