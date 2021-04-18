@@ -1,4 +1,7 @@
-    @RequestMapping(value = "selectPro")
+extends NamedParameterJdbcDaoSupport
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+
+@RequestMapping(value = "selectPro")
     public List<Property_EO> getSelectProperty(
         @RequestParam (value = "p_propertyid", required = false) String p_propertyid){ 
             
