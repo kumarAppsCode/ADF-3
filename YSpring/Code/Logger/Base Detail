@@ -1,0 +1,17 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+Logger logger=LoggerFactory.getLogger(PropertyMater_SO.class);
+
+logger.info("Start==> Procedure");        
+************************************************************************
+-- In Property File
+LOGGER.info==default working
+logger.debug==need to custome
+logging.level.root=DEBUG--pring all logger
+logging.level.com.foldername=DEBUG
+************************************************************************
+
+https://docs.spring.io/spring-boot/docs/2.1.13.RELEASE/reference/html/boot-features-logging.html
+
+http://logback.qos.ch/manual/configuration.html
