@@ -1,3 +1,6 @@
+long totProcEndTime = System.currentTimeMillis();
+System.out.println("total time taken for proc execution for all item :: " + (totProcEndTime - totProcStartTime) + " ms");
+long totProcStartTime = System.currentTimeMillis();
 
 *******************************************************************************************************************
     // Save
