@@ -1,4 +1,8 @@
-    @RequestMapping(value = "/lookuptypesval", method = RequestMethod.POST)
+long totProcEndTime = System.currentTimeMillis();
+System.out.println("total time taken for proc execution for all item :: " + (totProcEndTime - totProcStartTime) + " ms");
+long totProcStartTime = System.currentTimeMillis();
+******************
+@RequestMapping(value = "/lookuptypesval", method = RequestMethod.POST)
     public ResponseEntity<Object> createLookupTypeswithVal(@RequestBody LookupType_EO lkentity){
         return lookupType_so.savewithValidation(lkentity);
     }
