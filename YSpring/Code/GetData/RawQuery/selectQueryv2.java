@@ -1,4 +1,8 @@
-    @RequestMapping(value = "allPro")
+extends NamedParameterJdbcDaoSupport
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+======================================================================
+
+@RequestMapping(value = "allPro")
     public List<Map<String, Object>> getProLs(
         @RequestParam (value = "p_propertyid", required = false) String p_propertyid){ 
             List<Map<String, Object>> result=
