@@ -1,4 +1,41 @@
-    @RequestMapping(value = "allPro")
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.sample.contract.Entity.Property_EO;
+import com.sample.contract.Utils.DBAUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.stereotype.Service;
+
+in Services
+    Logger logger=LoggerFactory.getLogger(PropertyMater_SO.class);
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public void setDataSource(JdbcTemplate jdbcTemplate) {
+        super.setDataSource(jdbcTemplate.getDataSource());
+    }
+
+***************************************************************************
+
+@RequestMapping(value = "allPro")
     public List<Map<String, Object>> getProLs(
         @RequestParam (value = "p_propertyid", required = false) String p_propertyid){ 
             List<Map<String, Object>> result=
