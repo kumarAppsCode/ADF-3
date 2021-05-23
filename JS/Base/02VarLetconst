@@ -1,0 +1,17 @@
+const name="dinesh";
+let  age=20;
+const hobby=true;
+
+age=50;
+
+function summary(userName, userAge, userHobby) {
+    return (
+        "User Name: "+
+        userName +
+        " age : "+
+        userAge+
+        " User hobby: "+
+        userHobby
+        );
+}
+console.log(summary(name, age, hobby));
