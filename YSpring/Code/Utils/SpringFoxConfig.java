@@ -1,15 +1,16 @@
 Springfox spring starter
 1. MVN: 
+<!-- Swagger 1 -->
 	<dependency>
 		<groupId>io.springfox</groupId>
 		<artifactId>springfox-swagger2</artifactId>
-		<version>2.9.2</version>
+		<version>2.6.1</version>
 	</dependency>
---------------------------------------------------------------------
+<!-- Swagger 2 -->
 	<dependency>
 		<groupId>io.springfox</groupId>
 		<artifactId>springfox-swagger-ui</artifactId>
-		<version>2.9.2</version>
+		<version>2.6.1</version>
 	</dependency>
 --------------------------------------------------------------------
 3. 	http://localhost:8081/swagger-ui.html
