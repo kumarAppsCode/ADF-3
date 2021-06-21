@@ -1,0 +1,81 @@
+package com.spring.contractvb.Utils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.sql.Types;
+import java.util.Map;
+
+@Service
+public class PackageCalling {
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public Map<String, Object> ContractPro(BigDecimal p_contractid, String typename, String loginUser) {
+        
+        SimpleJdbcCall procedure=DBAUtils.callStoredProcedure("xxsm_contract_pro", jdbcTemplate);   
+        procedure.declareParameters(
+         new SqlParameter("p_contract_id",  Types.NUMERIC),
+         new SqlParameter("p_type",  Types.VARCHAR),
+         new SqlParameter("p_login_user",  Types.VARCHAR),
+         new SqlOutParameter("p_status_code",    Types.VARCHAR),
+         new SqlOutParameter("p_out_status", Types.VARCHAR)
+        ).compile();
+        SqlParameterSource param=new MapSqlParameterSource()
+        .addValue("p_contract_id", p_contractid)
+        .addValue("p_type", typename)
+        .addValue("p_login_user", loginUser);
+
+        Map<String, Object> out=procedure.execute(param);   
+        // out.put("code", out.get("p_status_code"));
+        // out.put("status", out.get("p_out_status"));
+        return out;
+       }
+
+}
+************************************************************************
+    public ResponseEntity<Object> delete_Contract(
+                                                   String typename,      
+                                                   BigDecimal p_contractid,
+                                                   String loginUser      
+                                                   ) {
+        Map<String, Object> ls = new HashMap();
+        // Optional<Contract_EO> isVal = contract_rp.findById(contract_id);
+        //   if(isVal.isPresent()){
+        //     contract_rp.deleteById(contract_id);
+        //         ls.put("status", "Record deleted Successfully");
+        //         ls.put("code", "200");
+        //     return ResponseEntity.ok(ls);
+        //   }else{
+        //     ls.put("status", "No Data Found");
+        //     ls.put("code", "401");
+        //     return ResponseEntity.ok(ls);
+        //   }
+        
+        ls=packageCalling.ContractPro(p_contractid, typename, loginUser);
+        // ls.get("code");    
+        // ls.get("status");
+        // System.out.println("1==>"+ls.get("code"));
+        // System.out.println("2==>"+ls.get("status"));
+        // System.out.println("3==>"+ls);
+
+        return ResponseEntity.ok(ls); 
+    }
+************************************************************************
+    @RequestMapping(value = "/contract/{processtype}/{contract_id}/{loginuser}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> delete_Contract(
+                        @PathVariable(name = "processtype") String processtype,
+                        @PathVariable(name = "contract_id") BigDecimal contract_id,
+                        @PathVariable(name = "loginuser") String loginuser
+                        ){
+        return contract_so.delete_Contract(processtype,contract_id,loginuser);
+    }
+************************************************************************
