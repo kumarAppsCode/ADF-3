@@ -38,12 +38,12 @@ public class CustomWebPagenation implements WebMvcConfigurer {
         pageResolver.setSizeParameterName("size");
         // **************************************************
         // PageRequest.of(1, 6);
-        pageResolver.setFallbackPageable(PageRequest.of(1, 25));
+        pageResolver.setFallbackPageable(PageRequest.of(0, 25));
         // Pageable pa= new PageRequest(0, 5);
         // pageResolver.setFallbackPageable(pa);
         // **************************************************
         //default 1 will come other wise from 0
-        pageResolver.setOneIndexedParameters(true);
+        // pageResolver.setOneIndexedParameters(true);
         // **************************************************
 
         resolvers.add(pageResolver);
