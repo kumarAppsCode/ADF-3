@@ -64,6 +64,27 @@ public class CustomerSTG_CO {
         return result;
     }
 
+    // *********************************
+    @RequestMapping(value = "/customer/sites" ,method = RequestMethod.GET)
+    public ResponseEntity<Object> getall_customerSite1(
+        @RequestParam (value = "p_cust_id", required = false) BigDecimal p_cust_id,
+        @RequestParam (value = "p_org_id", required = false) BigDecimal p_org_id
+        ,Pageable page
+    ){ 
+        // return customer_so.getall_customerSite1(
+        //                                         p_cust_id, 
+        //                                         p_org_id 
+        //                                         // ,page
+        //                                         );
+        return customer_so.getall_customerSite1(
+                                                    p_cust_id, 
+                                                    p_org_id 
+                                                    ,page
+                                                    );
+    }
+
+
+
     @RequestMapping(value = "/customer/contact" ,method = RequestMethod.GET)
     public List<Map<String, Object>> getall_customerContatct(
         @RequestParam (value = "p_cust_id", required = false) BigDecimal p_cust_id,
