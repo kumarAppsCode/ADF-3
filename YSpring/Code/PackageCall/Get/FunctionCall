@@ -10,6 +10,22 @@ controller:
     return result;
     }
 **********
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
+
+
     public Map<String, Object> getSumOfValue(Integer number1, Integer number2) {
         
         Map<String, Object> response=new HashMap<String, Object>();
@@ -27,6 +43,10 @@ controller:
         return  response;
     }
 ****************
+    import org.springframework.jdbc.core.JdbcTemplate;
+    import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+
+
     /**
      * This method is used to get instance of simplejdbccall by passing below parameters
      * @param procedure
