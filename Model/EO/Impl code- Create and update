@@ -1,4 +1,7 @@
-        protected void create(AttributeList attributeList) {
+import oracle.jbo.server.SequenceImpl;
+
+
+protected void create(AttributeList attributeList) {
         SequenceImpl seq = new SequenceImpl("FUNC_ID_S", this.getDBTransaction());
         this.setLookupTypeId(seq.getSequenceNumber());
         this.setCreatedBy(ADFContext.getCurrent().getSessionScope().get("userName").toString());
