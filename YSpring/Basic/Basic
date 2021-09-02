@@ -18,3 +18,11 @@ spring.datasource.password=ppp
 spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
 spring.jpa.database-platform=org.hibernate.dialect.Oracle10gDialect
 ==============================================================
+
+mvn compile
+mvn dependency:resolve
+mvn install
+mvn package
+mvn test
+mvn dependency:resolve
+mvn dependency:get -Dartifact=groupId:artifactId:version
