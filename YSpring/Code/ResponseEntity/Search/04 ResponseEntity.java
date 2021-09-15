@@ -9,3 +9,27 @@
         response.put("service", ls);
         return ResponseEntity.ok().body(response);
     }
+******************************************************************************************************************************************
+    @RequestMapping(value = "/getScheduleNotes" ,method = RequestMethod.GET)
+    public ResponseEntity<Map<String, Object>> getScheduleNotes(
+        @RequestParam(name = "scheduleId", required = false)String scheduleId
+    ){
+        return scheduleNote_so.getScheduleNotes(scheduleId);
+    }
+    
+    public ResponseEntity<Map<String, Object>> getScheduleNotes(String scheduleId) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        if(scheduleId==null){
+            List<ScheduleNote_EO> ls = scheduleNote_ro.findAll();
+            response.put("schedulenote", ls);
+
+            return ResponseEntity.ok().body(response);            
+        }else{
+            Optional<ScheduleNote_EO> ls = scheduleNote_ro.findById(new BigDecimal(scheduleId));
+            response.put("schedulenote", ls);
+            return ResponseEntity.ok().body(response);            
+
+        }
+        
+    }
+******************************************************************************************************************************************
