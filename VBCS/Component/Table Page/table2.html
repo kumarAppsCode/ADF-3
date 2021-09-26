@@ -1,0 +1,12 @@
+      <oj-table scroll-policy="loadMoreOnScroll" class="oj-flex-item oj-sm-12 oj-md-12"
+        data="[[ $variables.pagingAreaData ]]"
+        columns='[{"headerText":"Area Name","field":"AREA_NAME","template":"Area Name"},{"headerText":"AP Batch Source Name","field":"AP_BATCH_SOURCE_NAME"},{"headerText":"AR Batch Source Name","field":"AR_BATCH_SOURCE_NAME"},{"headerText":"GL Batch Source Name","field":"GL_BATCH_SOURCE_NAME"},{"headerText":"GL Category","field":"GL_CATEGORY"},{"headerText":"Description","field":"DESCRIPTION"},{"headerText":"ActiveYn","field":"ENABLED_FLAG"}]'
+        id="areatableId">
+        <template slot="Area Name">
+          <a target="_blank">
+            <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+          </a>
+        </template>
+          <oj-paging-control id="paging"  data="[[ $variables.pagingAreaData ]]" page-size="10" slot="bottom">
+                  </oj-paging-control>
+      </oj-table>
