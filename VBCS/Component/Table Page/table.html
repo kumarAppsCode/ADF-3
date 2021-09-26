@@ -1,0 +1,11 @@
+<div class="oj-flex">
+  <oj-table scroll-policy="loadMoreOnScroll"
+   class="oj-flex-item oj-sm-12 oj-md-12"
+   columns='[   {    "headerText": "firstName",    "field": "firstName"  }, 
+    {    "headerText": "lastName",  
+      "field": "lastName"  },  {    "headerText": "email",    "field": "email"  }]' data="[[ $page.variables.pagingData ]]">
+  
+  <oj-paging-control id="paging"  data="[[ $page.variables.pagingData ]]" page-size="1" slot="bottom">
+                  </oj-paging-control>
+  </oj-table>
+</div>
