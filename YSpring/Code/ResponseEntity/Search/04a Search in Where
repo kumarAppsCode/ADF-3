@@ -1,0 +1,11 @@
+((UPPER (AREA_NAME) LIKE  '%'|| UPPER (#areaName) || '%' OR #areaName IS NULL) OR UPPER(#areaName)= UPPER('Search') OR UPPER(#areaName)= UPPER('undefined'))
+
+
+        String customerContactSQL=
+        " SELECT CHART_OF_ACCOUNTS_ID, SEGMENT_NUM, SEGMENT_NAME, FLEX_VALUE_SET_NAME, FLEX_VALUE, FLEX_VALUE_MEANING, ENABLED_FLAG, SUMMARY_FLAG,TRX_SOURCE "+ 
+        " FROM XXEPG_COA_SEGMENT_VALUES_STG "+
+        " WHERE ENABLED_FLAG='Y'  "+
+        "AND  CHART_OF_ACCOUNTS_ID=:chartAcc "+
+        "AND  SEGMENT_NUM=:segmentNum "+
+        "AND ( (UPPER (FLEX_VALUE_MEANING) LIKE  '%'|| UPPER (:flexMean) || '%' OR :flexMean IS NULL) OR UPPER(:flexMean)= UPPER('Search') OR UPPER(:flexMean)= UPPER('undefined')"+
+        "OR (UPPER (FLEX_VALUE) LIKE  '%'|| UPPER (:flexMean) || '%' OR :flexMean IS NULL) OR UPPER(:flexMean)= UPPER('Search') OR UPPER(:flexMean)= UPPER('undefined') )";
