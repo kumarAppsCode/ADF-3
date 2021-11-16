@@ -1,0 +1,9 @@
+SELECT * FROM XXPOS_CASH_BOX_TRANS_ALL_V
+WHERE 
+INTERFACE_STATUS=:pINTERFACE_STATUS
+AND INTERFACE_MODULE=:pINTERFACE_MODULE
+AND TRANS_DATE BETWEEN to_date(:pFROMDATE, 'YYYY-MM-DD') and to_date(:pTODATE, 'YYYY-MM-DD')
+AND(
+(UPPER (POST_TYPE) LIKE '%'|| UPPER (:pPostType) || '%' OR :pPostType IS NULL) OR UPPER(:pPostType) = UPPER('Search') OR UPPER(:pPostType)= UPPER('undefined')
+OR (UPPER (PROCESS_ID) LIKE '%'|| UPPER (:pPostType) || '%' OR :pPostType IS NULL) OR UPPER(:pPostType)= UPPER('Search') OR UPPER(:pPostType)= UPPER('undefined')
+)
