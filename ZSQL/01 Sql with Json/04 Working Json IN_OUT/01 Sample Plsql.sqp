@@ -1,0 +1,52 @@
+create or replace PROCEDURE create_departments (p_data  IN  BLOB)
+AS
+L_CURSOR SYS_REFCURSOR;
+
+BEGIN
+
+
+INSERT INTO dept (deptno, dname)
+    SELECT *
+    FROM   json_table(p_data FORMAT JSON, '$.departments[*].department'
+           COLUMNS (
+             deptno  NUMBER   PATH '$.department_no',
+             dname   VARCHAR2 PATH '$.department_name'));
+
+--  INSERT INTO emp (deptno, empno, ename, sal, hiredate)
+--    SELECT j.*, SYSDATE AS hiredate
+--    FROM   json_table(p_data FORMAT JSON, '$.departments[*].department'
+--           COLUMNS (
+--             deptno  NUMBER   PATH '$.department_no',
+--             NESTED           PATH '$.employees[*]'
+--               COLUMNS (
+--                 empno  NUMBER    PATH '$.employee_number',
+--                 ename  VARCHAR2  PATH '$.employee_name',
+--                 sal    NUMBER    PATH '$.salary'))) j; 
+  COMMIT;
+
+OPEN L_CURSOR FOR
+    SELECT *
+    FROM   json_table(p_data FORMAT JSON, '$.departments[*].department'
+           COLUMNS (
+             deptno  NUMBER   PATH '$.department_no',
+             dname   VARCHAR2 PATH '$.department_name'));
+
+
+  APEX_JSON.open_object;
+  APEX_JSON.write ( 'rws', L_CURSOR );
+  APEX_JSON.close_object;
+--  p_get_data := APEX_JSON.get_clob_output;
+--p_get_data := L_CURSOR;
+
+
+--OPEN 
+--p_out 
+--FOR 
+--SELECT 
+--*
+--FROM dept;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    HTP.print(SQLERRM);
+END;
