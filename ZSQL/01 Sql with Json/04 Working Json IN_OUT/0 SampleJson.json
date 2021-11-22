@@ -1,0 +1,35 @@
+{
+  "departments":[
+    {
+      "department":{
+        "department_name":"DEV",
+        "department_no":70,
+        "employees":[
+          {
+            "employee_number":9000,
+            "employee_name":"JONES",
+            "salary":1000
+          },
+          {
+            "employee_number":9001,
+            "employee_name":"SMITH",
+            "salary":2000
+          }
+        ]
+      }
+    },
+    {
+      "department":{
+        "department_name":"DBA",
+        "department_no":80,
+        "employees":[
+          {
+            "employee_number":9002,
+            "employee_name":"HALL",
+            "salary":3000
+          }
+        ]
+      }
+    }
+  ]
+}
