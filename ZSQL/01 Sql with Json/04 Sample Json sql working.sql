@@ -1,0 +1,114 @@
+create or replace PROCEDURE XX_BUDGET_PLAN_POST (p_data IN blob) 
+AS
+
+L_PRIMARYKEY number;
+p_budgetplan SYS_REFCURSOR;
+
+CURSOR LDATA 
+is
+SELECT 
+PLAN_ID,
+OBJECT_VERSION_NUMBER, PLAN_NAME, sysdate as CREATION_DATE, CREATED_BY, sysdate as LAST_UPDATE_DATE, LAST_UPDATED_BY, LAST_UPDATE_LOGIN
+--*
+FROM   json_table(p_data FORMAT JSON, '$'
+COLUMNS (
+PLAN_ID    NUMBER  PATH '$.planid',
+OBJECT_VERSION_NUMBER  NUMBER   PATH '$.object_version_number',
+PLAN_NAME   VARCHAR2 PATH '$.plan_name',
+CREATED_BY   VARCHAR2 PATH '$.created_by',
+LAST_UPDATED_BY   VARCHAR2 PATH '$.last_updated_by',
+LAST_UPDATE_LOGIN   VARCHAR2 PATH '$.last_update_login'
+));
+
+--
+
+
+--CURSOR Labc 
+--is
+--SELECT *
+--FROM   json_table(p_data FORMAT JSON, '$.departments[*].department'
+--COLUMNS (
+--deptno  NUMBER   PATH '$.department_no',
+--dname   VARCHAR2 PATH '$.department_name'
+--));
+BEGIN
+
+
+for i in LDATA 
+loop
+L_PRIMARYKEY:=PLAN_ID_S.NEXTVAL;
+--
+IF(i.PLAN_ID IS NOT NULL) THEN
+  UPDATE XXQIA_BUDGET_PLANS
+  SET 
+  PLAN_NAME=i.PLAN_NAME
+  WHERE 
+  PLAN_ID=i.PLAN_ID;
+  COMMIT;
+  L_PRIMARYKEY:=i.PLAN_ID;
+ELSE
+INSERT INTO XXQIA_BUDGET_PLANS
+  (
+    PLAN_ID,
+    OBJECT_VERSION_NUMBER
+    ,PLAN_NAME
+    ,CREATION_DATE,
+    CREATED_BY,
+    LAST_UPDATE_DATE,
+    LAST_UPDATED_BY,
+    LAST_UPDATE_LOGIN
+  )
+  VALUES
+  (
+    L_PRIMARYKEY
+    ,i.OBJECT_VERSION_NUMBER
+    ,i.PLAN_NAME
+    ,sysdate 
+    ,i.CREATED_BY
+    ,sysdate 
+    ,i.LAST_UPDATED_BY
+    ,i.LAST_UPDATE_LOGIN
+  );
+COMMIT;
+END IF;
+end loop;
+--
+OPEN p_budgetplan FOR
+SELECT PLAN_ID ,
+  OBJECT_VERSION_NUMBER,
+  PLAN_NAME,
+  ADMINISTRATOR_PERSON_ID,
+  ADMINISTRATOR_PERSON_NAME,
+  COMPANY_CODE,
+  COMPANY_NAME,
+  BUDGER_YEAR,
+  CURRENCY_CODE,
+  START_DATE,
+  END_DATE,
+  STATUS_CODE,
+  ENTRY_START_DATE,
+  ENTRY_END_DATE,
+  NOTIFY_PLAN_TO_USERS,
+  COMMENTS_TO_USERS,
+  CREATION_DATE,
+  CREATED_BY,
+  LAST_UPDATE_DATE,
+  LAST_UPDATED_BY,
+  LAST_UPDATE_LOGIN
+FROM XXQIA_BUDGET_PLANS
+WHERE PLAN_ID       =L_PRIMARYKEY;
+---- 
+  APEX_JSON.open_object;
+  APEX_JSON.write (p_budgetplan);
+--    APEX_JSON.write ( 'rws', 'p_budgetplan');
+  APEX_JSON.close_object;
+
+
+
+
+
+EXCEPTION 
+WHEN OTHERS THEN
+DBMS_OUTPUT.PUT_LINE(sqlerrm);
+
+END XX_BUDGET_PLAN_POST;
