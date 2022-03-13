@@ -1,0 +1,15 @@
+create or replace PACKAGE ps_community_master_pkg
+IS
+   PROCEDURE process_data (p_method       IN VARCHAR2
+                          ,p_primarykey   IN NUMBER
+                          ,p_data         IN BLOB);
+
+   PROCEDURE post_data (p_primarykey   IN NUMBER
+                       ,p_data         IN BLOB);
+
+   PROCEDURE put_data (p_primarykey   IN NUMBER
+                      ,p_data         IN BLOB);
+
+   PROCEDURE delete_data (p_primarykey   IN NUMBER
+                         ,p_data         IN BLOB);
+END ps_community_master_pkg;
