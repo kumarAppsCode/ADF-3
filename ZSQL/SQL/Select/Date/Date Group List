@@ -1,0 +1,13 @@
+select ldates, dd, mm, yy, weeks_days
+from (
+select 
+to_date(:start_date,'dd-mm-yyyy') + rownum -1 as ldates,
+EXTRACT(Day FROM to_date(:start_date,'dd-mm-yyyy') + rownum -1 )as dd,
+EXTRACT(Month FROM to_date(:start_date,'dd-mm-yyyy') + rownum -1 )as mm,
+EXTRACT(Year FROM to_date(:start_date,'dd-mm-yyyy') + rownum -1 )as yy,
+upper(TO_CHAR (to_date(:start_date,'dd-mm-yyyy') + rownum -1, 'Dy')) as weeks_days
+from all_objects
+where rownum <= to_date(:end_date,'dd-mm-yyyy')-to_date(:start_date,'dd-mm-yyyy')+1
+)
+
+/
